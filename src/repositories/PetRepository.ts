@@ -1,20 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { client } from "../db/PostgresConection";
-
-type Pet = {
-  petId: string;
-  donatorId: string;
-  ownerId: string;
-  petName: string;
-  petAddress: {
-      city: string;
-      state: string;
-  }
-  age: number;
-  medicalCondition: string;
-  petType: string;
-  isAdopted: boolean;
-}
+import { Pet } from "../models/Pet";
 
 class PetRepository {
   // add new pet post to db
@@ -37,45 +23,54 @@ class PetRepository {
     };
     await client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to save user on db", err.stack);
-      } else {
-        console.log("pet saved on db suscessfully");
+        return err;
       }
     });
+
+    return {
+      status: "200",
+      message: "Pet added to db"
+    }
   }
   // change isAdopted status of pet
-  async adoptPet(pet_id, new_owner_id) {
+  async adoptPet(petId : string, newOwnerId : string) {
     const query = {
       text: "UPDATE pets SET ownerid = $1, isadopted = $2 WHERE petid = $3",
-      values: [new_owner_id, true, pet_id],
+      values: [newOwnerId, true, petId]
     }
     await client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to update pet on db", err.stack);
-      } else {
-        console.log("pet updated on db suscessfully");
+        return err;
       }
     });
+
+    return {
+      status: "200",
+      message: "Pet adopted"
+    }
   }
   //delete adoption post
-  deletePet(pet_id) {
+  async deletePet(pet_id : string) {
     const query = {
       text: "DELETE FROM pets WHERE petid = $1",
       values: [pet_id],
     }
     client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to delete pet on db", err.stack);
-      } else {
-        console.log("pet deleted on db suscessfully");
+        return err;
       }
     });
+
+    return {
+      status: "200",
+      message: "Pet deleted from db"
+    }
   }
   //get pet adoption info
-  async getPet(pet_id) {
+  async getPet(id : string) {
       const query = {
         text: "SELECT * FROM pets WHERE petid = $1",
-        values: [pet_id],
+        values: [id],
       }
       let pet;
       await client.query(query).then((res) => {
@@ -83,94 +78,56 @@ class PetRepository {
       });
       return pet;
   }
-  //get all cat list
-  async getCatList(city, state) {
+  //get a list of pets by pet type
+  async getPetList(city : string, state : string, petType : string) {
     const query = {
       text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3",
-      values: [city, state, "cat"],
+      values: [city, state, petType],
     }
-    let petList = [];
-    await client.query(query, (err, res) => {
+    var petList = [];
+    client.query(query, (err, res) => {
       if (err) {
         console.log("error while trying to get cat list on db", err.stack);
       } else {
         for(let i = 0; i < res.rows.length; i++) {
           petList.push(res.rows[i]);
         }
-        console.log("Cat List:", () => {
-          petList.forEach(element => {
-            console.log(element);
-          });
-        });
-      }
-    });
-    return petList;
-  }
-  //get all dog list
-  async getDogList(city, state) {
-    const query = {
-      text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3",
-      values: [city, state, "dog"],
-    }
-    let petList = [];
-    await client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get cat list on db", err.stack);
-      } else {
-        for(let i = 0; i < res.rows.length; i++) {
-          petList.push(res.rows[i]);
-        }
-        console.log("Dog List:", () => {
-          petList.forEach(element => {
-            console.log(element);
-          });
-        });
       }
     });
     return petList;
   }
   //get all adopted pets list
-  async getUserAdoptedPetsList(userId) {
+  async getUserAdoptedPetsList(userId : string) {
     const query = {
       text: "SELECT * FROM pets WHERE ownerid = $1",
       values: [userId],
     }
     let petList = [];
-    await client.query(query, (err, res) => {
+    client.query(query, (err, res) => {
       if (err) {
         console.log("error while trying to get cat list on db", err.stack);
       } else {
         for(let i = 0; i < res.rows.length; i++) {
           petList.push(res.rows[i]);
         }
-        console.log("Adopted Pets List:", () => {
-          petList.forEach(element => {
-            console.log(element);
-          });
-        });
       }
     });
     return petList;
   }
   //get all pets donated list
-  async getUserDonatedPetsList(userId) {
+  async getUserDonatedPetsList(userId : string) {
     const query = {
       text: "SELECT * FROM pets WHERE donatorid = $1",
       values: [userId],
     }
     let petList = [];
-    await client.query(query, (err, res) => {
+    client.query(query, (err, res) => {
       if (err) {
         console.log("error while trying to get cat list on db", err.stack);
       } else {
         for(let i = 0; i < res.rows.length; i++) {
           petList.push(res.rows[i]);
         }
-        console.log("Donated Pets List:", () => {
-          petList.forEach(element => {
-            console.log(element);
-          });
-        });
       }
     });
     return petList;

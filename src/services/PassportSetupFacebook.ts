@@ -1,7 +1,6 @@
 import passport from "passport";
 import FacebookStrategy from "passport-facebook";
 import { UserController } from "../controllers/UserController";
-import { authenticateUser } from "../services/AuthenticateUser";
 import { Request, Response } from "express";
 import "dotenv/config.js";
 
@@ -29,11 +28,10 @@ passport.use(
     },
     async function (accessToken, refreshToken, profile, done,
       req: Request, res: Response) {
-        try {
+        try{
           req = profile.id;
-          const user = await authenticateUser(req, res);
+          const user = await userController.verifyUser(profile.id);
           if (user) {
-            console.log(`User ${user.username} logged`);
             return done(null, user);
           } else {
             req = profile;

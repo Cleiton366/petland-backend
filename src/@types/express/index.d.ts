@@ -1,9 +1,9 @@
+import { Pet } from "../models/Pet";
 
 declare namespace Express {
     export interface Request {
-        id: string;
-        user: any;
-        status: number;
+        user: string;
+        pet: Pet;
     }
 
     export interface Response {

@@ -4,11 +4,10 @@ import { Request, Response } from "express";
 const userRepository = new UserRepository();
 
 class UserController {
-  
   async getUser(req: Request, res: Response) {
-    const id = req;
-    const user = await userRepository.getUser(id);
-    return user;
+    const { user } = req;
+    const result = await userRepository.getUser(user);
+    return result;
   }
 
   async newUser(req: Request, res: Response) {
@@ -16,7 +15,11 @@ class UserController {
     await userRepository.newUser(user);
     return user;
   }
-  
+
+  async verifyUser(id) {
+    const result = await userRepository.getUser(id);
+    return result;
+  }
 }
 
 export { UserController };

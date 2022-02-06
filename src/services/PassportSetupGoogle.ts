@@ -1,6 +1,5 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
-import { authenticateUser } from "./AuthenticateUser";
 import { UserController } from "../controllers/UserController";
 import { Request, Response } from "express";
 import "dotenv/config.js";
@@ -30,13 +29,12 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async function (accessToken,refreshToken,profile,done,
+    async function (accessToken, refreshToken, profile, done,
       req: Request,res: Response) {
       try {
         req = profile.id;
-        const user = await authenticateUser(req, res);
+        const user = await userController.verifyUser(profile.id);
         if (user) {
-          console.log(`User ${user.username} logged`);
           return done(null, user);
         } else {
           req = profile;
