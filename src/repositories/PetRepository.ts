@@ -72,10 +72,12 @@ class PetRepository {
         text: "SELECT * FROM pets WHERE petid = $1",
         values: [id],
       }
-      let pet;
-      await client.query(query).then((res) => {
-        pet = res.rows[0];
-      });
+      const pet = client
+      .query(query)
+      .then(res => {
+        return res.rows[0];
+      })
+      .catch(e => console.error(e.stack));
       return pet;
   }
   //get a list of pets by pet type
@@ -84,17 +86,13 @@ class PetRepository {
       text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3",
       values: [city, state, petType],
     }
-    var petList = [];
-    client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get cat list on db", err.stack);
-      } else {
-        for(let i = 0; i < res.rows.length; i++) {
-          petList.push(res.rows[i]);
-        }
-      }
-    });
-    return petList;
+    const petList = client
+      .query(query)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(e => console.error(e.stack));
+      return petList;
   }
   //get all adopted pets list
   async getUserAdoptedPetsList(userId : string) {
@@ -102,17 +100,13 @@ class PetRepository {
       text: "SELECT * FROM pets WHERE ownerid = $1",
       values: [userId],
     }
-    let petList = [];
-    client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get cat list on db", err.stack);
-      } else {
-        for(let i = 0; i < res.rows.length; i++) {
-          petList.push(res.rows[i]);
-        }
-      }
-    });
-    return petList;
+    const petList = client
+      .query(query)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(e => console.error(e.stack));
+      return petList;
   }
   //get all pets donated list
   async getUserDonatedPetsList(userId : string) {
@@ -120,17 +114,13 @@ class PetRepository {
       text: "SELECT * FROM pets WHERE donatorid = $1",
       values: [userId],
     }
-    let petList = [];
-    client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get cat list on db", err.stack);
-      } else {
-        for(let i = 0; i < res.rows.length; i++) {
-          petList.push(res.rows[i]);
-        }
-      }
-    });
-    return petList;
+    const petList = client
+      .query(query)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(e => console.error(e.stack));
+      return petList;
   }
 }
 
