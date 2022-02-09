@@ -2,7 +2,6 @@ import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import { AuthenticationController } from "../controllers/AuthenticationController";
 import { Request, Response } from "express";
-import  fetch  from "node-fetch"
 import "dotenv/config.js";
 
 const authenticationController = new AuthenticationController();

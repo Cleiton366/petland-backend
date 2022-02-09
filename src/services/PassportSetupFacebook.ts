@@ -2,7 +2,6 @@ import passport from "passport";
 import FacebookStrategy from "passport-facebook";
 import { AuthenticationController } from "../controllers/AuthenticationController";
 import { Request, Response } from "express";
-import  fetch  from "node-fetch"
 import "dotenv/config.js";
 
 const authenticationController = new AuthenticationController();
@@ -45,22 +44,3 @@ passport.use(
         }
       })
 );
-
-/*
-const response = await fetch(`${process.env.API}/newUser`, {
-              method : "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                id: profile.id,
-                displayName: profile.displayName,
-                userPhoto: profile.photos[0].value,
-                email: profile.emails[0].value,
-              }),
-            });    
-            const result = await response.json();
-            if(result.status.toString() == "error") return done("user already exist");
-            return done(null, profile);
-
-*/
