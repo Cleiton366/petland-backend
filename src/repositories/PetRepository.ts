@@ -28,7 +28,7 @@ class PetRepository {
     });
 
     return {
-      status: "200",
+      status: "success",
       message: "Pet added to db"
     }
   }
@@ -45,7 +45,7 @@ class PetRepository {
     });
 
     return {
-      status: "200",
+      status: "success",
       message: "Pet adopted"
     }
   }
@@ -62,7 +62,7 @@ class PetRepository {
     });
 
     return {
-      status: "200",
+      status: "success",
       message: "Pet deleted from db"
     }
   }

@@ -3,23 +3,23 @@ import { Request, Response } from "express";
 
 const userRepository = new UserRepository();
 
-class UserController {
+class AuthenticationController {
   async getUser(req: Request, res: Response) {
     const { user } = req;
-    const result = await userRepository.getUser(user);
+    const result = await userRepository.getUser(user.toString());
     return result;
   }
 
   async newUser(req: Request, res: Response) {
     const user = req;
-    await userRepository.newUser(user);
-    return user;
+    const result = await userRepository.newUser(user);
+    return result;
   }
 
-  async verifyUser(id) {
+  async verifyUser(id: string) {
     const result = await userRepository.getUser(id);
     return result;
   }
 }
 
-export { UserController };
+export { AuthenticationController };

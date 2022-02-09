@@ -2,7 +2,7 @@ import { client } from "../db/PostgresConection";
 import { accountCreatedEmail } from "../services/AutomateEmailer";
 
 class UserRepository {
-  async getUser(id) {
+  async getUser(id : string) {
     try {
       const query = {
         text: "SELECT * FROM users WHERE id = $1",
@@ -20,6 +20,11 @@ class UserRepository {
  
   async newUser(user) {
     
+    const userExist = await this.verifyUserEmail(user.emails[0].value);
+    if(userExist){
+      return null;
+    }
+
     const query = {
       text: "INSERT INTO users(avatarUrl, id, userName, email) VALUES($1, $2, $3, $4)",
       values: [
@@ -29,15 +34,16 @@ class UserRepository {
         user.emails[0].value,
       ],
     };
-    await client.query(query, (err, res) => {
+    client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to save user on db", err.stack);
-      } else {
-        console.log("user saved on db suscessfully");
-        accountCreatedEmail(user.emails[0].value);
-        return user;
+        return {
+          status: "error",
+          message: err,
+        }
       }
     });
+    return user;
+    //accountCreatedEmail(user.emails[0].value);
   }
   
   async verifyUserEmail(email : string) {
@@ -45,13 +51,13 @@ class UserRepository {
       text: "SELECT * FROM users WHERE email = $1",
       values: [email],
     };
-    let result;
+    var userExist = false;
     await client.query(query).then((res) => {
-      result = res.rows[0];
+      if(res.rows.length > 0){
+        userExist = true;
+      }
     });
-    if(result){
-      return true;
-    }else return false;
+    return userExist;
   }
 }
 

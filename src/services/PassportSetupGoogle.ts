@@ -1,10 +1,11 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
-import { UserController } from "../controllers/UserController";
+import { AuthenticationController } from "../controllers/AuthenticationController";
 import { Request, Response } from "express";
+import  fetch  from "node-fetch"
 import "dotenv/config.js";
 
-const userController = new UserController();
+const authenticationController = new AuthenticationController();
 
 interface IUser {
   id: string;
@@ -33,13 +34,14 @@ passport.use(
       req: Request,res: Response) {
       try {
         req = profile.id;
-        const user = await userController.verifyUser(profile.id);
+        const user = await authenticationController.verifyUser(profile.id);
         if (user) {
           return done(null, user);
         } else {
           req = profile;
-          await userController.newUser(req, res);
-          return done(null, profile);
+          const result = await authenticationController.newUser(req, res);
+          if(result === null) return done(JSON.stringify({status: "error", message: "user already exist"}));
+          return done(null, result);
         }
       } catch (err) {
         return done(err);

@@ -4,11 +4,10 @@ declare namespace Express {
     export interface Request {
         user: string;
         pet: Pet;
+        status : string;
     }
 
     export interface Response {
-        user: {
-            username: string;
-        }
+        message: string;
     }
 }

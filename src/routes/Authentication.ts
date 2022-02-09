@@ -4,10 +4,10 @@ import "../services/PassportSetupFacebook";
 import passport from "passport";
 import cookieSession from "cookie-session";
 import { isLoggedIn } from "../middleware/IsLoggedIn";
-import { UserController } from "../controllers/UserController";
+import { AuthenticationController } from "../controllers/AuthenticationController";
 
 const router = Router();
-const userController = new UserController();
+const authenticationController = new AuthenticationController();
 
 router.use(
   cookieSession({
@@ -66,7 +66,7 @@ router.get("/login_error", (req, res) => res.send("You Failed to log in"));
 
 // User logged, can get information about the user
 router.get("/user-info", isLoggedIn, async (req , res) => {
-  const user = await userController.getUser(req, res);
+  const user = await authenticationController.getUser(req, res);
   res.json(user);
 });
 // Logout route
@@ -76,5 +76,6 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+router.post("/newUser",  authenticationController.newUser);
 
 export { router };
