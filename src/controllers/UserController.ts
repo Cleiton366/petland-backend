@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 const userRepository = new UserRepository();
 
-class AuthenticationController {
+class UserController {
   async getUser(req: Request, res: Response) {
     const { user } = req;
     const result = await userRepository.getUser(user.toString());
@@ -22,4 +22,4 @@ class AuthenticationController {
   }
 }
 
-export { AuthenticationController };
+export { UserController };

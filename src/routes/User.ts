@@ -4,11 +4,11 @@ import "../services/PassportSetupFacebook";
 import passport from "passport";
 import cookieSession from "cookie-session";
 import { isLoggedIn } from "../middleware/IsLoggedIn";
-import { AuthenticationController } from "../controllers/AuthenticationController";
+import { UserController } from "../controllers/UserController";
 import { check_api_key } from "../middleware/check_api_key";
 
 const router = Router();
-const authenticationController = new AuthenticationController();
+const userController = new UserController();
 
 router.use(
   cookieSession({
@@ -67,7 +67,7 @@ router.get("/login_error", (req, res) => res.json("Something went wrong"));
 
 // User logged, can get information about the user
 router.get("/user-info", [isLoggedIn, check_api_key], async (req , res) => {
-  const user = await authenticationController.getUser(req, res);
+  const user = await userController.getUser(req, res);
   res.json(user);
 });
 // Logout route
@@ -77,6 +77,6 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-router.post("/newUser",  authenticationController.newUser);
+router.post("/newUser",  userController.newUser);
 
 export { router };

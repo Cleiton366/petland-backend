@@ -1,10 +1,10 @@
 import passport from "passport";
 import FacebookStrategy from "passport-facebook";
-import { AuthenticationController } from "../controllers/AuthenticationController";
+import { UserController } from "../controllers/UserController";
 import { Request, Response } from "express";
 import "dotenv/config.js";
 
-const authenticationController = new AuthenticationController();
+const userController = new UserController();
 
 interface IUser {
   id: string;
@@ -30,12 +30,12 @@ passport.use(
       req: Request, res: Response) {
         try{
           req = profile.id;
-          const user = await authenticationController.verifyUser(profile.id);
+          const user = await userController.verifyUser(profile.id);
           if (user) {
             return done(null, user);
           } else {
             req = profile;
-            const result = await authenticationController.newUser(req, res);
+            const result = await userController.newUser(req, res);
             if(result === null) return done(JSON.stringify({status: "error", message: "user already exist"}));
             return done(null, result);
           }
