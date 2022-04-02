@@ -31,10 +31,14 @@ class PetController {
   ///get a list of pets by pet type
   async getPetList(req: Request, res: Response) {
     const { city, state, petType } = req.query;
-    const catList = await petRepository.getPetList(city.toString(), state.toString(), petType.toString());
+    const catList = await petRepository.getPetList(
+      city.toString(),
+      state.toString(),
+      petType.toString()
+    );
     return res.json(catList);
   }
- 
+
   //get all adopted pets list
   async getAdoptedPetsList(req: Request, res: Response) {
     const userId = req.query.toString();

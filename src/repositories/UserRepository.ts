@@ -42,8 +42,9 @@ class UserRepository {
         }
       }
     });
+    
+    accountCreatedEmail(user.emails[0].value);
     return user;
-    //accountCreatedEmail(user.emails[0].value);
   }
   
   async verifyUserEmail(email : string) {

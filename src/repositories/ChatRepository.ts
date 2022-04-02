@@ -51,17 +51,13 @@ class ChatRepository {
       text: "SELECT * FROM message WHERE chat_id = $1 sortedBy = time_stamp",
       values: [chatId],
     };
-    let messagesList = [];
-    await client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get messages on db", err.stack);
-      } else {
-        for (let i = 0; i < res.rows.length; i++) {
-          messagesList.push(res.rows[i]);
-        }
-      }
-    });
-    return messagesList;
+    const messageList = client
+      .query(query)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(e => console.error(e.stack));
+      return messageList;
   }
 
   async createMessage(chatId, message, timeStamp, userId, userProfilePicture) {

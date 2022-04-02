@@ -62,7 +62,7 @@ router.get(
 //////////////////////Google and Facebook error and success routes/////////////////////////////
 
 //login error route
-router.get("/login_error", (req, res) => res.send("You Failed to log in"));
+router.get("/login_error", (req, res) => res.json("Something went wrong"));
 
 // User logged, can get information about the user
 router.get("/user-info", isLoggedIn, async (req , res) => {
