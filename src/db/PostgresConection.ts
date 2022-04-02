@@ -7,7 +7,7 @@ const client = new Client({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: parseInt(process.env.PGPORT),
-  ssl: true
+  ssl: process.env.PGDATABASE_URL ? true : false
 });
 client.connect();
 export { client };
