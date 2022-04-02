@@ -2,6 +2,7 @@
   "name": "Petland",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "license": "MIT",
   "devDependencies": {
     "@types/cookie-session": "^2.0.43",
