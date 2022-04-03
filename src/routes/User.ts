@@ -26,7 +26,7 @@ router.use(passport.session());
 
 // Login route
 router.get(
-  "/oauth/google",
+  "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 // login callback
