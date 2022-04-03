@@ -8,18 +8,18 @@ const router = Router();
 //////////////////pet routes////////////////////////
 
 // add new pet to db
-router.post("/newpet", check_api_key, petController.newPet);
+router.post("/pet/new", check_api_key, petController.newPet);
 
 // change isAdopted status of pet
-router.put("/adoptpet", check_api_key, petController.adoptPet);
+router.put("/pet/adopt", check_api_key, petController.adoptPet);
 
 //delete pet
-router.delete("/deletepet", check_api_key, petController.deletePet);
+router.delete("/pet/delete", check_api_key, petController.deletePet);
 
 //get pet pet info
-router.get("/getPet/:petId", check_api_key, petController.getPet);
+router.get("/pet/:petId", check_api_key, petController.getPet);
 
 //get a list of pets by pet type
-router.get("/petlist", check_api_key, petController.getPetList);
+router.get("/pet/list", check_api_key, petController.getPetList);
 
 export { router };
