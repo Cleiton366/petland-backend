@@ -30,7 +30,8 @@ class PetController {
   }
   ///get a list of pets by pet type
   async getPetList(req: Request, res: Response) {
-    const { city, state, petType } = req.query;
+    const { city, state } = req.query;
+    const { petType } = req.params;
     const catList = await petRepository.getPetList(
       city.toString(),
       state.toString(),

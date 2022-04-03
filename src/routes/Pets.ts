@@ -20,6 +20,6 @@ router.delete("/pet/delete", check_api_key, petController.deletePet);
 router.get("/pet/:petId", check_api_key, petController.getPet);
 
 //get a list of pets by pet type
-router.get("/pet/list", check_api_key, petController.getPetList);
+router.get("/pet/:petType/list", check_api_key, petController.getPetList);
 
 export { router };
