@@ -20,6 +20,19 @@ class UserController {
     const result = await userRepository.getUser(id);
     return result;
   }
+
+  async getDonatedPets(req: Request, res: Response) {
+    const { userId } = req.headers;
+    const donatedPetsList = await userRepository.getDonatedPets(userId.toString());
+    return res.json(donatedPetsList);
+  }
+
+  async getUserPets(req: Request, res: Response) {
+    const { userId } = req.headers;
+    const donatedPetsList = await userRepository.getUserPets(userId.toString());
+    return res.json(donatedPetsList);
+  }
+
 }
 
 export { UserController };

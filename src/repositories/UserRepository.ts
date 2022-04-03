@@ -60,6 +60,34 @@ class UserRepository {
     });
     return userExist;
   }
+
+  async getDonatedPets(userId : string) {
+    const query = {
+      text: "SELECT * FROM pets WHERE donatorid = $1",
+      values: [userId],
+    };
+    const donatedPetsList = client
+    .query(query)
+    .then(res => {
+      return res.rows;
+    })
+    .catch(e => console.error(e.stack));
+    return donatedPetsList;
+  }
+
+  async getUserPets(userId : string) {
+    const query = {
+      text: "SELECT * FROM pets WHERE ownerid = $1",
+      values: [userId],
+    };
+    const donatedPetsList = client
+    .query(query)
+    .then(res => {
+      return res.rows;
+    })
+    .catch(e => console.error(e.stack));
+    return donatedPetsList;
+  }
 }
 
 export { UserRepository };

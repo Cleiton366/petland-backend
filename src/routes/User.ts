@@ -77,6 +77,12 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+///////////////////////////////User routes///////////////////////////////////////////////
+
 router.post("/newUser",  userController.newUser);
+
+router.get("/donatedPets", check_api_key, userController.getDonatedPets);
+
+router.get("/userPets", check_api_key, userController.getUserPets);
 
 export { router };
