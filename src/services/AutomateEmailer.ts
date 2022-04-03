@@ -1,5 +1,10 @@
+import { UserRepository } from "../repositories/UserRepository";
+import { PetRepository } from "../repositories/PetRepository";
 import nodemailer from "nodemailer";
 import "dotenv/config.js";
+
+const petRepository = new PetRepository();
+const userRepository = new UserRepository();
 
 const stmpTransport = nodemailer.createTransport({
   service: "gmail",
@@ -10,6 +15,7 @@ const stmpTransport = nodemailer.createTransport({
 });
 
 function accountCreatedEmail(userEmail: string) {
+
   const emailObj = {
     from: "noreply.petland@gmail.com",
     to: userEmail,
@@ -28,4 +34,27 @@ function accountCreatedEmail(userEmail: string) {
   });
 }
 
-export { accountCreatedEmail };
+async function petAdoptedEmail(userId, petId) {
+
+  const user = await userRepository.getUser(userId);
+  const pet = await petRepository.getPet(petId);
+
+  const emailObj = {
+    from: "noreply.petland@gmail.com",
+    to: user.email,
+    subject: "Congratulations! Your adoption request has been accepted",
+    generateTextFromHTML: true,
+    html: `<h3>We are so happy to tell you that ${pet.name} is your new new pet!!</h3>`+
+    `<img src=${pet.petphoto} alt="pet photo" width="400" height="500">`,
+  };
+
+  stmpTransport.sendMail(emailObj, (err, res) => {
+    if (err) {
+      console.log("Error while trying to sent email:", err);
+    } else {
+      console.log("Email sent to user suscessfully: ", res);
+    }
+  });
+}
+
+export { accountCreatedEmail, petAdoptedEmail };

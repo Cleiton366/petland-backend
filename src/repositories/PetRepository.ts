@@ -1,6 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import { client } from "../db/PostgresConection";
 import { Pet } from "../models/Pet";
+import { petAdoptedEmail } from "../services/AutomateEmailer";
+
 
 class PetRepository {
   // add new pet post to db
@@ -44,6 +46,8 @@ class PetRepository {
       }
     });
 
+    petAdoptedEmail(newOwnerId, petId);
+
     return {
       status: "success",
       message: "Pet adopted"
@@ -83,7 +87,7 @@ class PetRepository {
   //get a list of pets by pet type
   async getPetList(city : string, state : string, petType : string) {
     const query = {
-      text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3",
+      text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3 and isadopted = false",
       values: [city, state, petType],
     }
     const petList = client
