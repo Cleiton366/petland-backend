@@ -31,7 +31,7 @@ router.get(
 );
 // login callback
 router.get(
-  "/google/oauth/callback",
+  "/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: "/user-info",
     failureRedirect: "/login_error",
