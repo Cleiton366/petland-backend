@@ -3,9 +3,6 @@ import { PetRepository } from "../repositories/PetRepository";
 import nodemailer from "nodemailer";
 import "dotenv/config.js";
 
-const petRepository = new PetRepository();
-const userRepository = new UserRepository();
-
 const stmpTransport = nodemailer.createTransport({
   service: "gmail",
   auth: { 
@@ -35,6 +32,9 @@ function accountCreatedEmail(userEmail: string) {
 }
 
 async function petAdoptedEmail(userId, petId) {
+
+  const petRepository = new PetRepository();
+  const userRepository = new UserRepository();
 
   const user = await userRepository.getUser(userId);
   const pet = await petRepository.getPet(petId);
