@@ -38,13 +38,12 @@ async function petAdoptedEmail(userId, petId) {
 
   const user = await userRepository.getUser(userId);
   const pet = await petRepository.getPet(petId);
-
   const emailObj = {
     from: "noreply.petland@gmail.com",
     to: user.email,
     subject: "Congratulations! Your adoption request has been accepted",
     generateTextFromHTML: true,
-    html: `<h3>We are so happy to tell you that ${pet.name} is your new new pet!!</h3>`+
+    html: `<h3>We are so happy to tell you that ${pet.petname} is your new new pet!!</h3>`+
     `<img src=${pet.petphoto} alt="pet photo" width="400" height="500">`,
   };
 
