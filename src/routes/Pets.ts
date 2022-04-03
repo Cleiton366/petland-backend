@@ -22,10 +22,4 @@ router.get("/getPet/:petId", check_api_key, petController.getPet);
 //get a list of pets by pet type
 router.get("/petlist", check_api_key, petController.getPetList);
 
-//get all adopted pets list
-router.get("/adoptedlist", check_api_key, petController.getAdoptedPetsList);
-
-//get all pets donated list
-router.get("/donatedlist", check_api_key, petController.getDonatedPetsList);
-
 export { router };

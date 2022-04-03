@@ -39,18 +39,6 @@ class PetController {
     return res.json(catList);
   }
 
-  //get all adopted pets list
-  async getAdoptedPetsList(req: Request, res: Response) {
-    const userId = req.query.toString();
-    const adoptedPetsList = await petRepository.getUserAdoptedPetsList(userId);
-    return res.json(adoptedPetsList);
-  }
-  //get all pets donated list
-  async getDonatedPetsList(req: Request, res: Response) {
-    const userId = req.query.toString();
-    const donatedPetsList = await petRepository.getUserDonatedPetsList(userId);
-    return res.json(donatedPetsList);
-  }
 }
 
 export { PetController };

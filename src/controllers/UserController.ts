@@ -22,14 +22,14 @@ class UserController {
   }
 
   async getDonatedPets(req: Request, res: Response) {
-    const  userId  = req.headers.userId;
-    const donatedPetsList = await userRepository.getDonatedPets(userId.toString());
+    const userid = req.headers.userid;
+    const donatedPetsList = await userRepository.getDonatedPets(userid.toString());
     return res.json(donatedPetsList);
   }
 
   async getUserPets(req: Request, res: Response) {
-    const  userId  = req.headers.userId;
-    const donatedPetsList = await userRepository.getUserPets(userId.toString());
+    const userid = req.headers.userid;
+    const donatedPetsList = await userRepository.getUserPets(userid.toString());
     return res.json(donatedPetsList);
   }
 

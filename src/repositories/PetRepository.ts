@@ -11,7 +11,7 @@ class PetRepository {
       values: [
         uuid(),
         pet.donatorId,
-        pet.ownerId,
+        "null",
         pet.petName,
         pet.petAddress.city,
         pet.petAddress.state,
@@ -85,34 +85,6 @@ class PetRepository {
     const query = {
       text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3",
       values: [city, state, petType],
-    }
-    const petList = client
-      .query(query)
-      .then(res => {
-        return res.rows;
-      })
-      .catch(e => console.error(e.stack));
-      return petList;
-  }
-  //get all adopted pets list
-  async getUserAdoptedPetsList(userId : string) {
-    const query = {
-      text: "SELECT * FROM pets WHERE ownerid = $1",
-      values: [userId],
-    }
-    const petList = client
-      .query(query)
-      .then(res => {
-        return res.rows;
-      })
-      .catch(e => console.error(e.stack));
-      return petList;
-  }
-  //get all pets donated list
-  async getUserDonatedPetsList(userId : string) {
-    const query = {
-      text: "SELECT * FROM pets WHERE donatorid = $1",
-      values: [userId],
     }
     const petList = client
       .query(query)
