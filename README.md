@@ -55,3 +55,11 @@ You will also need to activate Gmail API in the Google Console to send emails au
 <ul>
 <li>Implement the chat with socket.io</li>
 </ul>
+
+<h2>Our Team:</h2>
+<ul>
+<li>Bergson Serafim de Souza</li>
+<li>Cleiton dos Santos Queiroz</li>
+<li>João Vitor Soares Furtado</li>
+<li>Gabriel Maia Gondim</li>
+</ul>
