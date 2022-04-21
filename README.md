@@ -63,3 +63,11 @@ You will also need to activate Gmail API in the Google Console to send emails au
 <li>João Vitor Soares Furtado</li>
 <li>Gabriel Maia Gondim</li>
 </ul>
+
+<h2>See also:</h2>
+
+<a href="https://www.figma.com/file/FVLvNAWcuzsl9kzyTqPVp7/PetLand">Prototype</a>
+<br>
+<a href="https://github.com/Cleiton366/petland-frontend">Front-End</a>
+<br>
+<a href="https://docs.google.com/document/d/195aoLrZPR0PdBPk3IkpMRdno1d7Rawyuwxew2cNeJD4">API documentation</a>
