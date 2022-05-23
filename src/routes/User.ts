@@ -73,7 +73,10 @@ router.get("/user-info", CheckSession, async (req, res) => {
 router.get("/logout", (req, res) => {
   req.session = null;
   req.logout();
-  res.redirect("/");
+  res.json({
+    Status: "Success",
+    Message: "User logged out",
+  });
 });
 
 ///////////////////////////////User routes///////////////////////////////////////////////
