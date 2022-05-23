@@ -3,8 +3,8 @@ import "../services/PassportSetupGoogle";
 import "../services/PassportSetupFacebook";
 import passport from "passport";
 import cookieSession from "cookie-session";
-import { isLoggedIn } from "../middleware/IsLoggedIn";
 import { UserController } from "../controllers/UserController";
+import { CheckSession } from "../middleware/CheckSession";
 
 const router = Router();
 const userController = new UserController();
@@ -13,7 +13,7 @@ router.use(
   cookieSession({
     name: "session",
     keys: ["key1", "key2"],
-    maxAge: 60 * 60 * 1000 // 1 hour
+    maxAge: 60 * 60 * 1000, // 1 hour
   })
 );
 
@@ -65,7 +65,7 @@ router.get(
 router.get("/login_error", (req, res) => res.json("Something went wrong"));
 
 // User logged, can get information about the user
-router.get("/user-info", [isLoggedIn], async (req , res) => {
+router.get("/user-info", CheckSession, async (req, res) => {
   const user = await userController.getUser(req, res);
   res.json(user);
 });
@@ -78,10 +78,10 @@ router.get("/logout", (req, res) => {
 
 ///////////////////////////////User routes///////////////////////////////////////////////
 
-router.post("/newUser",  userController.newUser);
+router.post("/newUser", userController.newUser);
 
-router.get("/donatedPets", userController.getDonatedPets);
+router.get("/donatedPets", CheckSession, userController.getDonatedPets);
 
-router.get("/userPets", userController.getUserPets);
+router.get("/userPets", CheckSession, userController.getUserPets);
 
 export { router };

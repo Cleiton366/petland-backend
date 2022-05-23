@@ -32,6 +32,8 @@ class PetController {
   async getPetList(req: Request, res: Response) {
     const { city, state } = req.query;
     const { petType } = req.params;
+    //console.log(req.headers.cookie);
+    console.log(req["session"]);
     const catList = await petRepository.getPetList(
       city.toString(),
       state.toString(),
