@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { PetController } from "../controllers/PetController";
-import { check_api_key } from "../middleware/check_api_key";
 
 const petController = new PetController();
 const router = Router();
@@ -8,18 +7,18 @@ const router = Router();
 //////////////////pet routes////////////////////////
 
 // add new pet to db
-router.post("/pet/new", check_api_key, petController.newPet);
+router.post("/pet/new", petController.newPet);
 
 // change isAdopted status of pet
-router.put("/pet/adopt", check_api_key, petController.adoptPet);
+router.put("/pet/adopt", petController.adoptPet);
 
 //delete pet
-router.delete("/pet/delete", check_api_key, petController.deletePet);
+router.delete("/pet/delete", petController.deletePet);
 
 //get pet pet info
-router.get("/pet/:petId", check_api_key, petController.getPet);
+router.get("/pet/:petId", petController.getPet);
 
 //get a list of pets by pet type
-router.get("/pet/:petType/list", check_api_key, petController.getPetList);
+router.get("/pet/:petType/list", petController.getPetList);
 
 export { router };

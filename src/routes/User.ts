@@ -5,7 +5,6 @@ import passport from "passport";
 import cookieSession from "cookie-session";
 import { isLoggedIn } from "../middleware/IsLoggedIn";
 import { UserController } from "../controllers/UserController";
-import { check_api_key } from "../middleware/check_api_key";
 
 const router = Router();
 const userController = new UserController();
@@ -66,7 +65,7 @@ router.get(
 router.get("/login_error", (req, res) => res.json("Something went wrong"));
 
 // User logged, can get information about the user
-router.get("/user-info", [isLoggedIn, check_api_key], async (req , res) => {
+router.get("/user-info", [isLoggedIn], async (req , res) => {
   const user = await userController.getUser(req, res);
   res.json(user);
 });
@@ -81,8 +80,8 @@ router.get("/logout", (req, res) => {
 
 router.post("/newUser",  userController.newUser);
 
-router.get("/donatedPets", check_api_key, userController.getDonatedPets);
+router.get("/donatedPets", userController.getDonatedPets);
 
-router.get("/userPets", check_api_key, userController.getUserPets);
+router.get("/userPets", userController.getUserPets);
 
 export { router };
