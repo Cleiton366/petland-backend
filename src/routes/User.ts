@@ -3,6 +3,7 @@ import "../services/PassportSetupGoogle";
 import "../services/PassportSetupFacebook";
 import passport from "passport";
 import cookieSession from "cookie-session";
+import "dotenv/config.js";
 import { UserController } from "../controllers/UserController";
 import { CheckSession } from "../middleware/CheckSession";
 
@@ -32,7 +33,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/user-info",
+    successRedirect: `${process.env.CLIENT_API}/home`,
     failureRedirect: "/login_error",
   })
 );
@@ -54,7 +55,7 @@ router.get(
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    successRedirect: "/user-info",
+    successRedirect: `${process.env.CLIENT_API}/home`,
     failureRedirect: "/login_error",
   })
 );
@@ -73,10 +74,7 @@ router.get("/user-info", CheckSession, async (req, res) => {
 router.get("/logout", (req, res) => {
   req.session = null;
   req.logout();
-  res.json({
-    Status: "Success",
-    Message: "User logged out",
-  });
+  res.redirect(process.env.CLIENT_API);
 });
 
 ///////////////////////////////User routes///////////////////////////////////////////////
