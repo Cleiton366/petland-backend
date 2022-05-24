@@ -6,6 +6,10 @@ import cookieSession from "cookie-session";
 import { UserController } from "../controllers/UserController";
 import { CheckSession } from "../middleware/CheckSession";
 
+// redirecionar pro backend(API) para fazer login ---->
+// o backend(API) redirecionara para a auntenticação do usuario no google ou facebook ----->
+// Mudar a callback do Facebook e Google para redirecionar pro Frontend novamente
+
 const router = Router();
 const userController = new UserController();
 
@@ -32,7 +36,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/user-info",
+    successRedirect: "/success-login",
     failureRedirect: "/login_error",
   })
 );
@@ -63,6 +67,9 @@ router.get(
 
 //login error route
 router.get("/login_error", (req, res) => res.json("Something went wrong"));
+
+//success login route
+router.get("/success-login", (req, res) => res.redirect("localhost:3000/home"));
 
 // User logged, can get information about the user
 router.get("/user-info", CheckSession, async (req, res) => {
