@@ -3,12 +3,9 @@ import "../services/PassportSetupGoogle";
 import "../services/PassportSetupFacebook";
 import passport from "passport";
 import cookieSession from "cookie-session";
+import "dotenv/config.js";
 import { UserController } from "../controllers/UserController";
 import { CheckSession } from "../middleware/CheckSession";
-
-// redirecionar pro backend(API) para fazer login ---->
-// o backend(API) redirecionara para a auntenticação do usuario no google ou facebook ----->
-// Mudar a callback do Facebook e Google para redirecionar pro Frontend novamente
 
 const router = Router();
 const userController = new UserController();
@@ -36,7 +33,7 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/success-login",
+    successRedirect: `${process.env.CLIENT_API}/home`,
     failureRedirect: "/login_error",
   })
 );
@@ -58,7 +55,7 @@ router.get(
 router.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", {
-    successRedirect: "/user-info",
+    successRedirect: `${process.env.CLIENT_API}/home`,
     failureRedirect: "/login_error",
   })
 );
@@ -67,9 +64,6 @@ router.get(
 
 //login error route
 router.get("/login_error", (req, res) => res.json("Something went wrong"));
-
-//success login route
-router.get("/success-login", (req, res) => res.redirect("localhost:3000/home"));
 
 // User logged, can get information about the user
 router.get("/user-info", CheckSession, async (req, res) => {
@@ -80,10 +74,7 @@ router.get("/user-info", CheckSession, async (req, res) => {
 router.get("/logout", (req, res) => {
   req.session = null;
   req.logout();
-  res.json({
-    Status: "Success",
-    Message: "User logged out",
-  });
+  res.redirect(process.env.CLIENT_API);
 });
 
 ///////////////////////////////User routes///////////////////////////////////////////////
