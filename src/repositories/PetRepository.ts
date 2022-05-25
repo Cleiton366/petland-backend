@@ -98,6 +98,21 @@ class PetRepository {
       .catch(e => console.error(e.stack));
       return petList;
   }
+
+  //get a list of all pets by pet type
+  async getPetAll(petType : string) {
+    const query = {
+      text: "SELECT * FROM pets WHERE pettype =$1 and isadopted = false",
+      values: [petType],
+    }
+    const petList = client
+      .query(query)
+      .then(res => {
+        return res.rows;
+      })
+      .catch(e => console.error(e.stack));
+      return petList;
+  }
 }
 
 export { PetRepository };

@@ -32,12 +32,21 @@ class PetController {
   async getPetList(req: Request, res: Response) {
     const { city, state } = req.query;
     const { petType } = req.params;
-    const catList = await petRepository.getPetList(
+    const petList = await petRepository.getPetList(
       city.toString(),
       state.toString(),
       petType.toString()
     );
-    return res.json(catList);
+    return res.json(petList);
+  }
+
+  ///get a list of all pets by pet type
+  async getPetAll(req: Request, res: Response) {
+    const { petType } = req.params;
+    const petList = await petRepository.getPetAll(
+      petType.toString()
+    );
+    return res.json(petList);
   }
 
 }

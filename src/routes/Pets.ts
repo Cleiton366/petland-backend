@@ -36,4 +36,7 @@ router.get("/pet/:petId", CheckSession, petController.getPet);
 //get a list of pets by pet type
 router.get("/pet/:petType/list", CheckSession, petController.getPetList);
 
+//get a list of all pets by pet type
+router.get("/pet/:petType/all", CheckSession, petController.getPetAll);
+
 export { router };
