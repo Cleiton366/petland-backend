@@ -4,7 +4,7 @@ export const CheckSession = (req, res, next) => {
             next();
         }
     } catch (error) {
-        return res.json({
+        return res.send(401, {
             Status: "Error",
             Message: "User not authenticated",
         });
