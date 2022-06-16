@@ -7,11 +7,12 @@ import { petAdoptedEmail } from "../services/AutomateEmailer";
 class PetRepository {
   // add new pet post to db
   async newPet(pet: Pet) {
+    const petId = uuid();
     const query = {
       text: "INSERT INTO pets(petid, donatorid, ownerid," 
         +"petname, city, sstate, age, medicalcondition, pettype, isadopted) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
       values: [
-        uuid(),
+        petId,
         pet.donatorId,
         "null",
         pet.petName,
@@ -31,7 +32,8 @@ class PetRepository {
 
     return {
       status: "success",
-      message: "Pet added to db"
+      message: "Pet added to db",
+      petId: petId
     }
   }
   // change isAdopted status of pet

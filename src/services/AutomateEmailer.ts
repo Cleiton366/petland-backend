@@ -25,8 +25,6 @@ function accountCreatedEmail(userEmail: string) {
   stmpTransport.sendMail(emailObj, (err, res) => {
     if (err) {
       console.log("Error while trying to sent email:", err);
-    } else {
-      console.log("Email sent to user suscessfully: ", res);
     }
   });
 }
@@ -50,8 +48,6 @@ async function petAdoptedEmail(userId, petId) {
   stmpTransport.sendMail(emailObj, (err, res) => {
     if (err) {
       console.log("Error while trying to sent email:", err);
-    } else {
-      console.log("Email sent to user suscessfully: ", res);
     }
   });
 }

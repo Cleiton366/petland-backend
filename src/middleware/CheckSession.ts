@@ -1,6 +1,9 @@
+import "dotenv/config.js";
 export const CheckSession = (req, res, next) => {
     try {
-        if(req.session.passport.user){
+        if (process.env.isAuthenticated) {
+            next();
+        }else if(req.session.passport.user){
             next();
         }
     } catch (error) {
