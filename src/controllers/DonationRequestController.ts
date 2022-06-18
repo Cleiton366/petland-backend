@@ -17,6 +17,7 @@ class DonationRequestController {
     }
     async rejectDonationRequest(req: Request, res: Response) {
         const { donationRequestId } = req.body;
+        console.log(donationRequestId);
         const result = await donationRequestRepository.rejectDonationRequest(donationRequestId.toString());
         res.json(result);
     }
