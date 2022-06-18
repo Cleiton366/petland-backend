@@ -1,23 +1,9 @@
 import { Router } from "express";
 import { PetController } from "../controllers/PetController";
 import { CheckSession } from "../middleware/CheckSession";
-import cookieSession from "cookie-session";
-import passport from "passport";
 
 const petController = new PetController();
 const router = Router();
-
-router.use(
-    cookieSession({
-      name: "session",
-      keys: ["key1", "key2"],
-      maxAge: 60 * 60 * 1000, // 1 hour
-    })
-  );
-  
-// Initializes passport and passport sessions
-router.use(passport.initialize());
-router.use(passport.session());
 
 //////////////////pet routes////////////////////////
 
