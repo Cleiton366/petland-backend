@@ -1,0 +1,7 @@
+type DonationRequest = {
+  ownerId: string;
+  interrestedDoneeId: string;
+  petId: string;
+};
+
+export { DonationRequest };
