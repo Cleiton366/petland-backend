@@ -6,13 +6,13 @@ const donationRequestRepository = new DonationRequestRepository();
 class DonationRequestController {
 
     async newDonationRequest(req: Request, res: Response) {
-        const { donationRequest } = req.body;
+        const donationRequest = req.body;
         const result = await donationRequestRepository.newDonationRequest(donationRequest);
         res.json(result);
     }
-    async aceptDonationRequest(req: Request, res: Response) {
+    async acceptDonationRequest(req: Request, res: Response) {
         const { donationRequestId } = req.headers;
-        const result = await donationRequestRepository.aceptDonationRequest(donationRequestId.toString());
+        const result = await donationRequestRepository.acceptDonationRequest(donationRequestId.toString());
         res.json(result);
     }
     async rejectDonationRequest(req: Request, res: Response) {

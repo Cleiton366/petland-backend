@@ -1,5 +1,5 @@
 type DonationRequest = {
-  ownerId: string;
+  donatorId: string;
   interrestedDoneeId: string;
   petId: string;
 };

@@ -1,5 +1,5 @@
-import { Pet } from "../models/Pet";
-import { DonationRequest } from "../models/DonationRequest";
+import { Pet } from "../../models/Pet";
+import { DonationRequest } from "../../models/DonationRequest";
 
 declare namespace Express {
   export interface Request {

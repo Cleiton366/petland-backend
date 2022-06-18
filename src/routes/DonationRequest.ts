@@ -5,9 +5,9 @@ import { CheckSession } from "../middleware/CheckSession";
 const donationRequestController = new DonationRequestController();
 const router = Router();
 
-router.post("/donationrequest/new", CheckSession, donationRequestController.newDonationRequest)
-router.put("/donationrequest/acept" , CheckSession , donationRequestController.aceptDonationRequest)
-router.put("/donationrequest/reject" , CheckSession, donationRequestController.rejectDonationRequest)
-router.put("/donationrequest/list" , CheckSession, donationRequestController.getUserDonationRequests)
+router.post("/donationrequest/new", donationRequestController.newDonationRequest);
+router.put("/donationrequest/accept" , CheckSession , donationRequestController.acceptDonationRequest);
+router.put("/donationrequest/reject" , CheckSession, donationRequestController.rejectDonationRequest);
+router.get("/donationrequest/list" , CheckSession, donationRequestController.getUserDonationRequests);
 
 export { router };
