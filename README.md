@@ -7,7 +7,7 @@
 <li>User will be notified automatically through email when there's changes on their account</li>
 </ul>
 
-<h2>Tecnologies used:</h2>
+<h2>Technologies used:</h2>
 
 <a href="http://www.passportjs.org">Passport Js</a>
 </br>
