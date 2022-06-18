@@ -36,25 +36,7 @@ class PetRepository {
       petId: petId
     }
   }
-  // change isAdopted status of pet
-  async adoptPet(petId : string, newOwnerId : string) {
-    const query = {
-      text: "UPDATE pets SET ownerid = $1, isadopted = $2 WHERE petid = $3",
-      values: [newOwnerId, true, petId]
-    }
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
 
-    petAdoptedEmail(newOwnerId, petId);
-
-    return {
-      status: "success",
-      message: "Pet adopted"
-    }
-  }
   //delete adoption post
   async deletePet(pet_id : string) {
     const query = {

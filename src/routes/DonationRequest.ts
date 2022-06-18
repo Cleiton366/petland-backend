@@ -6,8 +6,8 @@ const donationRequestController = new DonationRequestController();
 const router = Router();
 
 router.post("/donationrequest/new", donationRequestController.newDonationRequest);
-router.put("/donationrequest/accept" , CheckSession , donationRequestController.acceptDonationRequest);
-router.put("/donationrequest/reject" , CheckSession, donationRequestController.rejectDonationRequest);
+router.post("/donationrequest/accept" , CheckSession , donationRequestController.acceptDonationRequest);
+router.delete("/donationrequest/reject" , CheckSession, donationRequestController.rejectDonationRequest);
 router.get("/donationrequest/list" , CheckSession, donationRequestController.getUserDonationRequests);
 
 export { router };

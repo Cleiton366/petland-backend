@@ -24,14 +24,6 @@ describe("Pets", () => {
     petId = response.body.petId;
   });
 
-  it("should adopt a pet", async () => {
-    const response = await request(app).put("/pet/adopt").send({
-      petId: petId,
-      newOwnerId: "1545028452517592",
-    });
-    expect(response.body.status).toBe("success");
-  });
-
   it("should return a pet", async () => {
     const response = await request(app).get(`/pet/${petId}`);
     expect(response.body.petid).toBe(petId);

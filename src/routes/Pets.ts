@@ -10,9 +10,6 @@ const router = Router();
 // add new pet to db
 router.post("/pet/new", CheckSession, petController.newPet);
 
-// change isAdopted status of pet
-router.put("/pet/adopt", CheckSession, petController.adoptPet);
-
 //delete pet
 router.delete("/pet/delete", CheckSession, petController.deletePet);
 

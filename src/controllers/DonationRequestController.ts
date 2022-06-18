@@ -11,12 +11,12 @@ class DonationRequestController {
         res.json(result);
     }
     async acceptDonationRequest(req: Request, res: Response) {
-        const { donationRequestId } = req.headers;
-        const result = await donationRequestRepository.acceptDonationRequest(donationRequestId.toString());
+        const { interrestedDoneeId, petId, donationRequestId } = req.body;
+        const result = await donationRequestRepository.acceptDonationRequest(interrestedDoneeId, petId, donationRequestId);
         res.json(result);
     }
     async rejectDonationRequest(req: Request, res: Response) {
-        const { donationRequestId } = req.headers;
+        const { donationRequestId } = req.body;
         const result = await donationRequestRepository.rejectDonationRequest(donationRequestId.toString());
         res.json(result);
     }

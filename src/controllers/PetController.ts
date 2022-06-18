@@ -10,12 +10,6 @@ class PetController {
     const result = await petRepository.newPet(pet);
     res.json(result);
   }
-  // change isAdopted status of pet
-  async adoptPet(req: Request, res: Response) {
-    const { petId, newOwnerId } = req.body;
-    const result = await petRepository.adoptPet(petId, newOwnerId);
-    res.json(result);
-  }
   //delete adoption post
   async deletePet(req: Request, res: Response) {
     const { petId } = req.body;
