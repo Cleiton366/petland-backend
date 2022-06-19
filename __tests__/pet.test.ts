@@ -2,7 +2,7 @@ import { app } from "../src/app";
 import request from "supertest";
 
 describe("Pets", () => {
-  var petId = "";
+  let petId = "";
 
   it("should create a new pet", async () => {
     const response = await request(app)

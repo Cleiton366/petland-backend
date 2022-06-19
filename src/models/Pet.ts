@@ -9,6 +9,7 @@ type Pet = {
   age: number;
   medicalCondition: string;
   petType: string;
+  image: File;
 };
 
 export { Pet };
