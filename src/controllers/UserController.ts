@@ -6,31 +6,40 @@ const userRepository = new UserRepository();
 class UserController {
   async getUser(req: Request, res: Response) {
     const { user } = req;
-    const result = await userRepository.getUser(user.toString());
-    return result;
+    return await userRepository.getUser(user.toString());
   }
 
   async newUser(req: Request, res: Response) {
     const user = req;
-    const result = await userRepository.newUser(user);
-    return result;
+    return await userRepository.newUser(user);
   }
 
   async verifyUser(id: string) {
-    const result = await userRepository.getUser(id);
-    return result;
+    return await userRepository.getUser(id);
   }
 
   async getDonatedPets(req: Request, res: Response) {
     const userid = req.headers.userid;
-    const donatedPetsList = await userRepository.getDonatedPets(userid.toString());
-    return res.json(donatedPetsList);
+    try {
+      const donatedPetsList = await userRepository.getDonatedPets(
+        userid.toString()
+      );
+      return res.json(donatedPetsList);
+    } catch (err) {
+      return res.status(500).send(err);
+    }
   }
 
   async getUserPets(req: Request, res: Response) {
     const userid = req.headers.userid;
-    const donatedPetsList = await userRepository.getUserPets(userid.toString());
-    return res.json(donatedPetsList);
+    try {
+      const donatedPetsList = await userRepository.getUserPets(
+        userid.toString()
+      );
+      return res.json(donatedPetsList);
+    } catch (err) {
+      return res.status(500).send(err);
+    }
   }
 }
 

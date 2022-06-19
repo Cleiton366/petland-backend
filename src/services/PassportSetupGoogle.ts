@@ -29,8 +29,14 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async function (accessToken, refreshToken, profile, done,
-      req: Request,res: Response) {
+    async function (
+      accessToken,
+      refreshToken,
+      profile,
+      done,
+      req: Request,
+      res: Response
+    ) {
       try {
         req = profile.id;
         const user = await userController.verifyUser(profile.id);
@@ -39,11 +45,11 @@ passport.use(
         } else {
           req = profile;
           const result = await userController.newUser(req, res);
-          if(result === null) return done(JSON.stringify({status: "error", message: "user already exist"}));
           return done(null, result);
         }
       } catch (err) {
         return done(err);
       }
-    })
+    }
+  )
 );

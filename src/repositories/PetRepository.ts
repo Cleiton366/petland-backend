@@ -25,11 +25,8 @@ class PetRepository {
         false,
       ],
     };
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+
+    await client.query(query);
 
     return {
       status: "success",
@@ -41,15 +38,11 @@ class PetRepository {
   async adoptPet(petId: string, newOwnerId: string) {
     const query = {
       text: "UPDATE pets SET ownerid = $1, isadopted = $2 WHERE petid = $3",
-      values: [newOwnerId, true, petId]
-    }
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+      values: [newOwnerId, true, petId],
+    };
 
-    petAdoptedEmail(newOwnerId, petId);
+    await client.query(query);
+    await petAdoptedEmail(newOwnerId, petId);
 
     return {
       status: "success",
@@ -61,12 +54,9 @@ class PetRepository {
     const query = {
       text: "DELETE FROM pets WHERE petid = $1",
       values: [pet_id],
-    }
-    client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+    };
+
+    await client.query(query);
 
     return {
       status: "success",
@@ -74,32 +64,24 @@ class PetRepository {
     };
   }
   //get pet adoption info
-  async getPet(id : string) {
-      const query = {
-        text: "SELECT * FROM pets WHERE petid = $1",
-        values: [id],
-      }
-      const pet = client
-      .query(query)
-      .then(res => {
-        return res.rows[0];
-      })
-      .catch(e => console.error(e.stack));
-      return pet;
+  async getPet(id: string) {
+    const query = {
+      text: "SELECT * FROM pets WHERE petid = $1",
+      values: [id],
+    };
+
+    const res = await client.query(query);
+    return res.rows[0];
   }
   //get a list of pets by pet type
   async getPetList(city: string, state: string, petType: string) {
     const query = {
       text: "SELECT * FROM pets WHERE city = $1 and sstate = $2 and pettype =$3 and isadopted = false",
       values: [city, state, petType],
-    }
-    const petList = client
-      .query(query)
-      .then(res => {
-        return res.rows;
-      })
-      .catch(e => console.error(e.stack));
-      return petList;
+    };
+
+    const res = await client.query(query);
+    return res.rows;
   }
 
   //get a list of all pets by pet type
@@ -107,14 +89,10 @@ class PetRepository {
     const query = {
       text: "SELECT * FROM pets WHERE pettype =$1 and isadopted = false",
       values: [petType],
-    }
-    const petList = client
-      .query(query)
-      .then(res => {
-        return res.rows;
-      })
-      .catch(e => console.error(e.stack));
-      return petList;
+    };
+
+    const res = await client.query(query);
+    return res.rows;
   }
 }
 

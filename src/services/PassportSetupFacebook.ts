@@ -26,21 +26,27 @@ passport.use(
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
       profileFields: ["id", "displayName", "photos", "email", "name"],
     },
-    async function (accessToken, refreshToken, profile, done,
-      req: Request, res: Response) {
-        try{
-          req = profile.id;
-          const user = await userController.verifyUser(profile.id);
-          if (user) {
-            return done(null, user);
-          } else {
-            req = profile;
-            const result = await userController.newUser(req, res);
-            if(result === null) return done(JSON.stringify({status: "error", message: "user already exist"}));
-            return done(null, result);
-          }
-        } catch (err) {
-          return done(err);
+    async function (
+      accessToken,
+      refreshToken,
+      profile,
+      done,
+      req: Request,
+      res: Response
+    ) {
+      try {
+        req = profile.id;
+        const user = await userController.verifyUser(profile.id);
+        if (user) {
+          return done(null, user);
+        } else {
+          req = profile;
+          const result = await userController.newUser(req, res);
+          return done(null, result);
         }
-      })
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
 );

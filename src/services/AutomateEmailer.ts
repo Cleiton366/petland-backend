@@ -11,8 +11,7 @@ const stmpTransport = nodemailer.createTransport({
   },
 });
 
-function accountCreatedEmail(userEmail: string) {
-
+async function accountCreatedEmail(userEmail: string) {
   const emailObj = {
     from: "noreply.petland@gmail.com",
     to: userEmail,
@@ -23,11 +22,11 @@ function accountCreatedEmail(userEmail: string) {
       `<img src="https://media1.giphy.com/media/gwisEpuibLPvu3seFQ/giphy.gif?cid=ecf05e47447ito8a0spq3060d8le1rmq1ykkslgxdkr25mhe&rid=giphy.gif&ct=g" width="400" height="500">`,
   };
 
-  stmpTransport.sendMail(emailObj, (err, res) => {
-    if (err) {
-      console.log("Error while trying to sent email:", err);
-    }
-  });
+  try {
+    await stmpTransport.sendMail(emailObj);
+  } catch (err) {
+    throw new Error(`Error while trying to send email: ${err.message}`);
+  }
 }
 
 async function petAdoptedEmail(userId, petId) {
@@ -46,11 +45,11 @@ async function petAdoptedEmail(userId, petId) {
       `<img src=${pet.petphoto} alt="pet photo" width="400" height="500">`,
   };
 
-  stmpTransport.sendMail(emailObj, (err, res) => {
-    if (err) {
-      console.log("Error while trying to sent email:", err);
-    }
-  });
+  try {
+    await stmpTransport.sendMail(emailObj);
+  } catch (err) {
+    throw new Error(`Error while trying to send email: ${err.message}`);
+  }
 }
 
 export { accountCreatedEmail, petAdoptedEmail };

@@ -2,26 +2,20 @@ import { client } from "../db/PostgresConection";
 import { accountCreatedEmail } from "../services/AutomateEmailer";
 
 class UserRepository {
-  async getUser(id : string) {
-    try {
-      const query = {
-        text: "SELECT * FROM users WHERE id = $1",
-        values: [id],
-      };
-      let user;
-      await client.query(query).then((res) => {
-        user = res.rows[0];
-      });
-      return user;
-    } catch (err) {
-      return err;
-    }
+  async getUser(id: string) {
+    const query = {
+      text: "SELECT * FROM users WHERE id = $1",
+      values: [id],
+    };
+
+    let res = await client.query(query);
+    return res.rows[0];
   }
- 
+
   async newUser(user) {
     const userExist = await this.verifyUserEmail(user.emails[0].value);
-    if(userExist){
-      return null;
+    if (userExist) {
+      throw new Error("Error: User already exists");
     }
 
     const query = {
@@ -33,16 +27,10 @@ class UserRepository {
         user.emails[0].value,
       ],
     };
-    client.query(query, (err, res) => {
-      if (err) {
-        return {
-          status: "error",
-          message: err,
-        }
-      }
-    });
-    
-    accountCreatedEmail(user.emails[0].value);
+
+    await client.query(query);
+    await accountCreatedEmail(user.emails[0].value);
+
     return user;
   }
 
@@ -51,12 +39,10 @@ class UserRepository {
       text: "SELECT * FROM users WHERE email = $1",
       values: [email],
     };
-    var userExist = false;
-    await client.query(query).then((res) => {
-      if(res.rows.length > 0){
-        userExist = true;
-      }
-    });
+
+    let res = await client.query(query);
+    let userExist = res.rows.length > 0;
+
     return userExist;
   }
 
@@ -65,13 +51,9 @@ class UserRepository {
       text: "SELECT * FROM pets WHERE donatorid = $1",
       values: [userId],
     };
-    const donatedPetsList = client
-    .query(query)
-    .then(res => {
-      return res.rows;
-    })
-    .catch(e => console.error(e.stack));
-    return donatedPetsList;
+
+    const res = await client.query(query);
+    return res.rows;
   }
 
   async getUserPets(userId: string) {
@@ -79,13 +61,9 @@ class UserRepository {
       text: "SELECT * FROM pets WHERE ownerid = $1",
       values: [userId],
     };
-    const donatedPetsList = client
-    .query(query)
-    .then(res => {
-      return res.rows;
-    })
-    .catch(e => console.error(e.stack));
-    return donatedPetsList;
+
+    const res = await client.query(query);
+    return res.rows;
   }
 }
 

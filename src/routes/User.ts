@@ -67,8 +67,12 @@ router.get("/login_error", (req, res) => res.json("Something went wrong"));
 
 // User logged, can get information about the user
 router.get("/user-info", CheckSession, async (req, res) => {
-  const user = await userController.getUser(req, res);
-  res.json(user);
+  try {
+    const user = await userController.getUser(req, res);
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 });
 // Logout route
 router.get("/logout", (req, res) => {
@@ -79,7 +83,14 @@ router.get("/logout", (req, res) => {
 
 ///////////////////////////////User routes///////////////////////////////////////////////
 
-router.post("/newUser", userController.newUser);
+router.post("/newUser", async (req, res) => {
+  try {
+    const user = await userController.newUser(req, res);
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
 
 router.get("/donatedPets", CheckSession, userController.getDonatedPets);
 
