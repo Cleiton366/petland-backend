@@ -32,7 +32,6 @@ class UserController {
     const donatedPetsList = await userRepository.getUserPets(userid.toString());
     return res.json(donatedPetsList);
   }
-
 }
 
 export { UserController };

@@ -19,7 +19,6 @@ class UserRepository {
   }
  
   async newUser(user) {
-    
     const userExist = await this.verifyUserEmail(user.emails[0].value);
     if(userExist){
       return null;
@@ -46,8 +45,8 @@ class UserRepository {
     accountCreatedEmail(user.emails[0].value);
     return user;
   }
-  
-  async verifyUserEmail(email : string) {
+
+  async verifyUserEmail(email: string) {
     const query = {
       text: "SELECT * FROM users WHERE email = $1",
       values: [email],
@@ -61,7 +60,7 @@ class UserRepository {
     return userExist;
   }
 
-  async getDonatedPets(userId : string) {
+  async getDonatedPets(userId: string) {
     const query = {
       text: "SELECT * FROM pets WHERE donatorid = $1",
       values: [userId],
@@ -75,7 +74,7 @@ class UserRepository {
     return donatedPetsList;
   }
 
-  async getUserPets(userId : string) {
+  async getUserPets(userId: string) {
     const query = {
       text: "SELECT * FROM pets WHERE ownerid = $1",
       values: [userId],

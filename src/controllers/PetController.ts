@@ -48,7 +48,6 @@ class PetController {
     );
     return res.json(petList);
   }
-
 }
 
 export { PetController };
