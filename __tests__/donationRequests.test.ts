@@ -29,7 +29,7 @@ describe("DonationRequests", () => {
     expect(response.body.message).toBe("Donation request added to db");
     donationRequestId = response.body.donationRequestId;
   });
-  
+
   it("should accept a donation request", async () => {
     const response = await request(app).post("/donationRequest/accept").send({
       interrestedDoneeId: "1545028452517592",
@@ -46,9 +46,7 @@ describe("DonationRequests", () => {
       petId: "test",
     });
     const donationRequestId_2 = response.body.donationRequestId;
-    var response = await request(app)
-    .delete("/donationrequest/reject")
-    .send({
+    var response = await request(app).delete("/donationrequest/reject").send({
       donationRequestId: donationRequestId_2,
     });
     expect(response.body.status).toBe("success");

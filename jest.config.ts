@@ -20,10 +20,10 @@ export default {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
- collectCoverageFrom: ["src/**"],
+  collectCoverageFrom: ["src/**"],
 
   // The directory where Jest should output its coverage files
- coverageDirectory: "__tests__/coverage",
+  coverageDirectory: "__tests__/coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
@@ -35,7 +35,7 @@ export default {
     "middleware",
     "controllers/ChatController.ts",
     "repositories/ChatRepository.ts",
-  //   "\\\\node_modules\\\\"
+    //   "\\\\node_modules\\\\"
   ],
 
   // Indicates which provider should be used to instrument code for coverage
@@ -96,7 +96,10 @@ export default {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      require.resolve("./__tests__/file-mock.js"),
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -162,9 +165,9 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/__tests__/**/*.ts"
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
+    "**/__tests__/**/*.ts",
+    //   "**/__tests__/**/*.[jt]s?(x)",
+    //   "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
@@ -177,7 +180,7 @@ export default {
     "middleware",
     "controllers/ChatController.ts",
     "repositories/ChatRepository.ts",
-  //   "\\\\node_modules\\\\"
+    //   "\\\\node_modules\\\\"
   ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
@@ -191,7 +194,7 @@ export default {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.ts?$": "ts-jest"
+    "^.+\\.ts?$": "ts-jest",
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

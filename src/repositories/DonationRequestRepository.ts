@@ -16,11 +16,8 @@ class DonationRequestRepository {
         donationRequest.petId,
       ],
     };
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+
+    await client.query(query);
 
     return {
       message: "Donation request added to db",
@@ -37,12 +34,8 @@ class DonationRequestRepository {
       text: "UPDATE pets SET ownerid = $1, isadopted = $2 WHERE petid = $3",
       values: [interrestedDoneeId, true, petId],
     };
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
 
+    await client.query(query);
     petAdoptedEmail(interrestedDoneeId, petId);
 
     query = {
@@ -50,11 +43,7 @@ class DonationRequestRepository {
       values: [true, donationRequestId],
     };
 
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+    await client.query(query);
 
     return {
       status: "success",
@@ -66,11 +55,8 @@ class DonationRequestRepository {
       text: "DELETE FROM donationrequests WHERE donationrequestid = $1",
       values: [donationRequestId],
     };
-    await client.query(query, (err, res) => {
-      if (err) {
-        return err;
-      }
-    });
+
+    await client.query(query);
 
     return {
       status: "success",
@@ -83,29 +69,26 @@ class DonationRequestRepository {
       text: "SELECT * FROM donationrequests WHERE donatorid = $1 AND isadopted = false",
       values: [userid],
     };
-    var donationRequests = [];
-    var donationRequestsList = [];
-    await client
-      .query(query)
-      .then((res) => {
-        donationRequests = res.rows;
-      })
-      .catch((e) => console.error(e.stack));
-      
-      for (let i = 0; i < donationRequests.length; i++) {
-        var userId = donationRequests[i].interresteddoneeid;
-        const user = await userRepository.getUser(userId);
-        donationRequestsList[i] = {
-          DonationRequest: donationRequests[i],
-          User: {
-            userId: user.id,
-            userName : user.username,
-            userPhoto: user.avatarurl
-          },
-        }
-      }
 
-      return donationRequestsList;
+    const res = await client.query(query);
+    const donationRequests = res.rows;
+
+    const donationRequestsList = [];
+    for (let i = 0; i < donationRequests.length; i++) {
+      var userId = donationRequests[i].interresteddoneeid;
+      const user = await userRepository.getUser(userId);
+
+      donationRequestsList.push({
+        DonationRequest: donationRequests[i],
+        User: {
+          userId: user.id,
+          userName: user.username,
+          userPhoto: user.avatarurl,
+        },
+      });
+    }
+
+    return donationRequestsList;
   }
 }
 

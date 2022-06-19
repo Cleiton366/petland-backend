@@ -14,13 +14,6 @@ class PetRepository {
   // add new pet post to db
   async newPet(pet: Pet) {
     const petId = uuid();
-    const { image } = pet;
-
-    if (image.size >= 4 * 1024 * 1024) {
-      throw new Error(
-        "Could not add pet: Image size should be smaller than 4MiB"
-      );
-    }
 
     const query = {
       text:
@@ -42,8 +35,17 @@ class PetRepository {
 
     await client.query(query);
 
-    const imageRef = ref(storage, `pets/${petId}`);
-    await uploadBytes(imageRef, image);
+    const { image } = pet;
+    if (image) {
+      if (image.size >= 4 * 1024 * 1024) {
+        throw new Error(
+          "Could not add pet: Image size should be smaller than 4MiB"
+        );
+      }
+
+      const imageRef = ref(storage, `pets/${petId}`);
+      await uploadBytes(imageRef, image);
+    }
 
     return {
       status: "success",
@@ -60,8 +62,14 @@ class PetRepository {
 
     await client.query(query);
 
-    const imageRef = ref(storage, `pets/${pet_id}`);
-    await deleteObject(imageRef);
+    try {
+      const imageRef = ref(storage, `pets/${pet_id}`);
+      await deleteObject(imageRef);
+    } catch (err) {
+      if (err.code != "storage/object-not-found") {
+        throw err;
+      }
+    }
 
     return {
       status: "success",
@@ -79,8 +87,16 @@ class PetRepository {
     const res = await client.query(query);
     const pet = res.rows[0];
 
-    const imageRef = ref(storage, `pets/${pet.petid}`);
-    pet.imageURL = await getDownloadURL(imageRef);
+    pet.imageURL = null;
+
+    try {
+      const imageRef = ref(storage, `pets/${pet.petid}`);
+      pet.imageURL = await getDownloadURL(imageRef);
+    } catch (err) {
+      if (err.code != "storage/object-not-found") {
+        throw err;
+      }
+    }
 
     return pet;
   }
