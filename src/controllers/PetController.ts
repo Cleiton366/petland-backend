@@ -70,6 +70,19 @@ class PetController {
       return res.status(500).send(err);
     }
   }
+
+  ///get a list of all pets by pet type
+  async getPetDownloadURL(req: Request, res: Response) {
+    const { petId } = req.params;
+    try {
+      const downloadURL = await petRepository.getPetDownloadURL(
+        petId.toString()
+      );
+      return res.json(downloadURL);
+    } catch (err) {
+      return res.status(500).send(err);
+    }
+  }
 }
 
 export { PetController };
