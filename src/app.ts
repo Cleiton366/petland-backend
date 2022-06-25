@@ -2,6 +2,7 @@ import express from "express";
 import { router as petsRouter } from "./routes/Pets";
 import { router as userRouter } from "./routes/User";
 import { router as donationRequestRouter } from "./routes/DonationRequest";
+import { router as chatRouter } from "./routes/Chat";
 import cookieParser from "cookie-parser";
 import "dotenv/config.js";
 import cors from "cors";
@@ -21,5 +22,6 @@ app.use(cookieParser());
 app.use(petsRouter);
 app.use(userRouter);
 app.use(donationRequestRouter);
+app.use(chatRouter);
 
 export { app };
