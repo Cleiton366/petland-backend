@@ -11,7 +11,7 @@ type Pet = {
   medicalCondition: string;
   petType: string;
   image: File;
-  user: User;
+  donatorInfo: User;
 };
 
 export { Pet };
