@@ -7,12 +7,11 @@ class ChatRepository {
       text: "SELECT * FROM chats WHERE chatid = $1",
       values: [chatId],
     };
-    const chat = await client.query(query, (err, res) => {
-      if (err) {
-        return null;
-      }
-    });
-    return chat;
+    const res = await client.query(query);
+    if(res.rowCount === 0) {
+      return null;
+    }
+    return res.rows[0];
   }
 
   async createChat(donatorId : string, interrestedDoneeId : string, petId : string) {
@@ -51,14 +50,14 @@ class ChatRepository {
 
   async createMessage(chatId : string, message : string, userId : string) {
     const query = {
-      text: "INSERT INTO messages (chatid, message, user_messageid, timestamp) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
+      text: "INSERT INTO messages (chatid, user_message, user_messageid, timestamp) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
       values: [chatId, message, userId],
     };
-    await client.query(query, (err, res) => {
-      if (err) {
-        return null;;
-      }
-    });
+    const res = await client.query(query);
+    if(res.rowCount === 0) {
+      return null;
+    }
+
     return {
       status: "success",
       message: "Message created",
