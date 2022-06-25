@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { client } from "../db/PostgresConection";
 import { Pet } from "../models/Pet";
-import { petAdoptedEmail } from "../services/AutomateEmailer";
+import { UserRepository } from "../repositories/UserRepository"
 import {
   ref,
   uploadBytes,
@@ -79,6 +79,7 @@ class PetRepository {
 
   //get pet adoption info
   async getPet(id: string) {
+    const userRepository = new UserRepository();
     const query = {
       text: "SELECT * FROM pets WHERE petid = $1",
       values: [id],
@@ -97,7 +98,7 @@ class PetRepository {
         throw err;
       }
     }
-
+    pet.donatorInfo = await userRepository.getUser(pet.donatorid);
     return pet;
   }
 
