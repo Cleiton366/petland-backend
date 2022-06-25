@@ -3,6 +3,7 @@ import { client } from "../db/PostgresConection";
 import { DonationRequest } from "../models/DonationRequest";
 import { petAdoptedEmail } from "../services/AutomateEmailer";
 import { UserRepository } from "../repositories/UserRepository";
+import { ChatRepository } from "../repositories/ChatRepository";
 
 class DonationRequestRepository {
   async newDonationRequest(donationRequest: DonationRequest) {
@@ -30,6 +31,7 @@ class DonationRequestRepository {
     petId: string,
     donationRequestId: string
   ) {
+    const chatRepository = new ChatRepository();
     let query = {
       text: "UPDATE pets SET ownerid = $1, isadopted = $2 WHERE petid = $3",
       values: [interrestedDoneeId, true, petId],
@@ -45,6 +47,22 @@ class DonationRequestRepository {
 
     await client.query(query);
 
+    query = {
+      text: "SELECT * FROM donationrequests WHERE donationrequestid = $1",
+      values: [donationRequestId],
+    };
+
+    const res = await client.query(query);
+    const donationRequest = res.rows[0];
+
+    const chat = chatRepository.createChat(donationRequest.donatorid, interrestedDoneeId, petId);
+    if(chat === null) {
+      return {
+        status: "error",
+        message: "Chat not created",
+      }
+    }
+    
     return {
       status: "success",
       message: "Pet adopted",
