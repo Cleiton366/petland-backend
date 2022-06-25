@@ -5,10 +5,9 @@ import { CheckSession } from "../middleware/CheckSession";
 const chatController = new ChatController();
 const router = Router();
 
-router.get("/chat/GetChat", CheckSession, chatController.getChat);
-router.get("/chat/MyChats", CheckSession, chatController.getUserChats);
-router.post("/chat/NewChat", CheckSession, chatController.createChat);
-router.get("/chat/GetMessages", CheckSession, chatController.getMessages);
-router.post("/chat/NewMessage", CheckSession, chatController.createMessage);
+router.get("/chat/getChat", CheckSession, chatController.getChat);
+router.get("/chat/userChats", CheckSession, chatController.getUserChats);
+router.get("/chat/getMessages", CheckSession, chatController.getMessages);
+router.post("/chat/newMessage", CheckSession, chatController.createMessage);
 
 export { router };
