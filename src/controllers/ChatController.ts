@@ -6,15 +6,15 @@ const chatRepository = new ChatRepository();
 class ChatController {
 
     async getChat(req: Request, res: Response) {
-        const { chatId } = req.body;
-        const chat = await chatRepository.getChat(chatId);
+        const chatId = req.headers.chatid;
+        const chat = await chatRepository.getChat(chatId.toString());
         if(chat === null) return res.status(404).send("Chat not found");
         return res.status(200).json(chat);
     }
 
     async getUserChats(req: Request, res: Response) {
-        const { userId } = req.body;
-        const chatList = await chatRepository.getUserChats(userId);
+        const userId = req.headers.userid;
+        const chatList = await chatRepository.getUserChats(userId.toString());
         return res.status(200).json(chatList);
     }
 
@@ -26,8 +26,8 @@ class ChatController {
     }
 
     async getMessages(req: Request, res: Response) {
-        const { chatId } = req.body;
-        const messagesList = await chatRepository.getMessages(chatId);
+        const chatId = req.headers.chatid;
+        const messagesList = await chatRepository.getMessages(chatId.toString());
         return res.status(200).json(messagesList);
     }
 
