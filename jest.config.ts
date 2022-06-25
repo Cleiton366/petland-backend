@@ -32,9 +32,7 @@ export default {
     "db",
     "models",
     "services",
-    "middleware",
-    "controllers/ChatController.ts",
-    "repositories/ChatRepository.ts",
+    "middleware"
     //   "\\\\node_modules\\\\"
   ],
 
