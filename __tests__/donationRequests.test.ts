@@ -31,14 +31,8 @@ describe("DonationRequests", () => {
   });
 
   it("should reject a donation request", async () => {
-    var response = await request(app).post("/donationRequest/new").send({
-      donatorId: "test",
-      interrestedDoneeId: "1545028452517592",
-      petId: "test",
-    });
-    const donationRequestId_2 = response.body.donationRequestId;
     var response = await request(app).delete("/donationrequest/reject").send({
-      donationRequestId: donationRequestId_2,
+      donationRequestId: donationRequestId,
     });
     expect(response.body.status).toBe("success");
   });
