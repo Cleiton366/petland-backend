@@ -15,10 +15,10 @@ class ChatRepository {
     return chat;
   }
 
-  async createChat(donatorid : string, interrestedDoneeId : string, petId : string) {
+  async createChat(donatorId : string, interrestedDoneeId : string, petId : string) {
     const query = {
       text: "INSERT INTO chats (chatid, donatorid, interrested_doneeid, petid) VALUES ($1, $2, $3, $4)",
-      values: [uuid(), donatorid, interrestedDoneeId, petId],
+      values: [uuid(), donatorId, interrestedDoneeId, petId],
     };
     await client.query(query, (err, res) => {
       if (err) {
@@ -31,7 +31,7 @@ class ChatRepository {
     };
   }
 
-  async getUserChats(userId) {
+  async getUserChats(userId : string) {
     const query = {
       text: "SELECT * FROM chats WHERE donatorid = $1 OR interrested_doneeid = $1",
       values: [userId],
@@ -40,7 +40,7 @@ class ChatRepository {
     return res.rows;
   }
 
-  async getMessages(chatId) {
+  async getMessages(chatId : string) {
     const query = {
       text: "SELECT * FROM messages WHERE chatid = $1 order by timestamp asc",
       values: [chatId],
@@ -49,7 +49,7 @@ class ChatRepository {
     return res.rows;
   }
 
-  async createMessage(chatId, message, userId) {
+  async createMessage(chatId : string, message : string, userId : string) {
     const query = {
       text: "INSERT INTO messages (chatid, message, user_messageid, timestamp) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
       values: [chatId, message, userId],
