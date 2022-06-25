@@ -30,15 +30,6 @@ describe("DonationRequests", () => {
     donationRequestId = response.body.donationRequestId;
   });
 
-  it("should accept a donation request", async () => {
-    const response = await request(app).post("/donationRequest/accept").send({
-      interrestedDoneeId: "1545028452517592",
-      petId: petId,
-      donationRequestId: donationRequestId,
-    });
-    expect(response.body.status).toBe("success");
-  });
-
   it("should reject a donation request", async () => {
     var response = await request(app).post("/donationRequest/new").send({
       donatorId: "test",

@@ -96,10 +96,10 @@ export default {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  moduleNameMapper: {
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-      require.resolve("./__tests__/file-mock.js"),
-  },
+  //moduleNameMapper: {
+  //  "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+  //    require.resolve("./__tests__/file-mock.js"),
+  //},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -177,9 +177,7 @@ export default {
     "db",
     "models",
     "services",
-    "middleware",
-    "controllers/ChatController.ts",
-    "repositories/ChatRepository.ts",
+    "middleware"
     //   "\\\\node_modules\\\\"
   ],
 

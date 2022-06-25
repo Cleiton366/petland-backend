@@ -24,11 +24,6 @@ describe("Pets", () => {
     petId = response.body.petId;
   });
 
-  it("should return a pet", async () => {
-    const response = await request(app).get(`/pet/${petId}`);
-    expect(response.body.petid).toBe(petId);
-  });
-
   it("should return a list of pets by state and city", async () => {
     const response = await request(app).get("/pet/cat/list").query({
       city: "Quixadá",
@@ -42,10 +37,4 @@ describe("Pets", () => {
     expect(response.body.length).toBeGreaterThan(0);
   });
 
-  it("should delete a pet", async () => {
-    const response = await request(app).delete("/pet/delete").send({
-      petId: petId,
-    });
-    expect(response.body.status).toBe("success");
-  });
 });
