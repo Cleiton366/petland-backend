@@ -1,8 +1,10 @@
 import { v4 as uuid } from "uuid";
 import { client } from "../db/PostgresConection";
+import { UserRepository } from "../repositories/UserRepository"
 
 class ChatRepository {
   async getChat(chatId : string) {
+    const userRepository = new UserRepository();
     const query = {
       text: "SELECT * FROM chats WHERE chatid = $1",
       values: [chatId],
@@ -11,7 +13,11 @@ class ChatRepository {
     if(res.rowCount === 0) {
       return null;
     }
-    return res.rows[0];
+    var chat = res.rows[0];
+    chat.donatorInfo = await userRepository.getUser(chat.donatorid);
+    chat.interrestedDoneeInfo = await userRepository.getUser(chat.interrested_doneeid);
+    
+    return chat;
   }
 
   async createChat(donatorId : string, interrestedDoneeId : string, petId : string) {
