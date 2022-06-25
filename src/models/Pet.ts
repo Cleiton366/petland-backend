@@ -1,3 +1,4 @@
+import { User } from "./User";
 type Pet = {
   donatorId: string;
   ownerId: string;
@@ -10,6 +11,7 @@ type Pet = {
   medicalCondition: string;
   petType: string;
   image: File;
+  user: User;
 };
 
 export { Pet };
