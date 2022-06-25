@@ -2,75 +2,67 @@ import { v4 as uuid } from "uuid";
 import { client } from "../db/PostgresConection";
 
 class ChatRepository {
-  async getChat(chatId) {
+  async getChat(chatId : string) {
     const query = {
-      text: "SELECT * FROM chat WHERE first_user_id = $1 OR second_user_id = $1",
+      text: "SELECT * FROM chats WHERE chatid = $1",
       values: [chatId],
     };
     const chat = await client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to get chat on db", err.stack);
+        return null;
       }
     });
     return chat;
   }
 
-  async createChat(chatId, firstUserId, secondUserId) {
+  async createChat(donatorid : string, interrestedDoneeId : string, petId : string) {
     const query = {
-      text: "INSERT INTO chat (id, first_user_id, second_user_id) VALUES ($1, $2, $3)",
-      values: [uuid(), firstUserId, secondUserId],
+      text: "INSERT INTO chats (chatid, donatorid, interrested_doneeid, petid) VALUES ($1, $2, $3, $4)",
+      values: [uuid(), donatorid, interrestedDoneeId, petId],
     };
-    const chat = await client.query(query, (err, res) => {
+    await client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to create chat on db", err.stack);
+        return null;
       }
     });
-    return chat;
+    return {
+      status: "success",
+      message: "Chat created",
+    };
   }
 
   async getUserChats(userId) {
     const query = {
-      text: "SELECT * FROM chat WHERE first_user_id = $1 OR second_user_id = $1",
+      text: "SELECT * FROM chats WHERE donatorid = $1 OR interrested_doneeid = $1",
       values: [userId],
     };
-    let chatList = [];
-    await client.query(query, (err, res) => {
-      if (err) {
-        console.log("error while trying to get user chats on db", err.stack);
-      } else {
-        for (let i = 0; i < res.rows.length; i++) {
-          chatList.push(res.rows[i]);
-        }
-      }
-    });
-    return chatList;
+    const res = await client.query(query);
+    return res.rows;
   }
 
   async getMessages(chatId) {
     const query = {
-      text: "SELECT * FROM message WHERE chat_id = $1 sortedBy = time_stamp",
+      text: "SELECT * FROM messages WHERE chatid = $1 order by timestamp asc",
       values: [chatId],
     };
-    const messageList = client
-      .query(query)
-      .then(res => {
-        return res.rows;
-      })
-      .catch(e => console.error(e.stack));
-      return messageList;
+    const res = await client.query(query);
+    return res.rows;
   }
 
-  async createMessage(chatId, message, timeStamp, userId, userProfilePicture) {
+  async createMessage(chatId, message, userId) {
     const query = {
-      text: "INSERT INTO message (chat_id, message, time_stamp, user_id, user_profile_picture) VALUES ($1, $2, $3, $4, $5)",
-      values: [chatId, message, timeStamp, userId, userProfilePicture],
+      text: "INSERT INTO messages (chatid, message, user_messageid, timestamp) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)",
+      values: [chatId, message, userId],
     };
-    const newMessage = await client.query(query, (err, res) => {
+    await client.query(query, (err, res) => {
       if (err) {
-        console.log("error while trying to create message on db", err.stack);
+        return null;;
       }
     });
-    return newMessage;
+    return {
+      status: "success",
+      message: "Message created",
+    };
   }
 
 }
