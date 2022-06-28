@@ -1,3 +1,8 @@
+<div align="center">
+  <h1>Petland-Back-End</h1>
+  <img src="https://img.shields.io/static/v1?label=Tests&message=71.28%&color=8257E5&labelColor=000000" alt="Test 71.28%" />
+</div>
+
 <h2>Petland functionalities:</h2>
 
 <ul>
@@ -37,6 +42,18 @@ Postgres was used as our database solution
 </br>
 node-postgres was used to make the conection with our Postgres database
 
+<a href="https://jestjs.io/">Jest</a>
+</br>
+Jest was used for testing
+
+<a href="https://www.npmjs.com/package/supertest">Supertest</a>
+</br>
+Supertest was used along with jest
+
+<a href="https://firebase.google.com/">Firebase</a>
+</br>
+Firebase was used for saving images
+
 <h2>Requeriments:</h2>
 
 <a href="https://console.cloud.google.com/">Google OAuth</a>
@@ -47,14 +64,13 @@ Google OAuth was used as login method so you will need to generate an API key at
 </br>
 Facebook OAuth was used as login method so you will need to generate an API key at Facebook for Developers to run this project
 
-<a href="https://console.cloud.google.com/">Gmail API</a>
+<a href="https://nodemailer.com/usage/using-gmail/">Set up nodemailer with Gmail</a>
 </br>
-You will also need to activate Gmail API in the Google Console to send emails automatically to the user
+You will also need to setup gmail with nodemailer in order to send the emails
 
-<h3>To-do:</h3>
-<ul>
-<li>Implement the chat with socket.io</li>
-</ul>
+<a href="https://firebase.google.com/">Firebase API</a>
+</br>
+You will also need to setup Firebase in order to save the images
 
 <h2>Our Team:</h2>
 <ul>
