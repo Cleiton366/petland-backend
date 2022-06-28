@@ -94,9 +94,11 @@ class PetRepository {
       const imageRef = ref(storage, `pets/${pet.petid}`);
       pet.imageURL = await getDownloadURL(imageRef);
     } catch (err) {
-      if (err.code != "storage/object-not-found") {
-        throw err;
-      }
+      /**
+       * if (err.code != "storage/object-not-found") {
+          return null
+        }
+       */
     }
     pet.donatorInfo = await userRepository.getUser(pet.donatorid);
     return pet;
