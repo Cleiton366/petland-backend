@@ -77,11 +77,12 @@ class PetRepository {
     const res = await client.query(query);
     const pet = res.rows[0];
 
+    pet.donatorInfo = await userRepository.getUser(pet.donatorid);
+
     const file = bucket.file(`pets/${id}`);
     const exists = (await file.exists())[0];
     pet.imageURL = exists ? file.publicUrl() : null;
 
-    pet.donatorInfo = await userRepository.getUser(pet.donatorid);
     return pet;
   }
 
