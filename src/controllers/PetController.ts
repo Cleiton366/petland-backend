@@ -1,13 +1,25 @@
 import { PetRepository } from "../repositories/PetRepository";
 import { Request, Response } from "express";
+import multer from "multer";
+import util from "util";
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const petRepository = new PetRepository();
 
 class PetController {
   // add new pet post to db
-  async newPet(req: Request, res: Response) {
-    const { pet } = req.body;
+  async newPet(req: any, res: Response, next) {
     try {
+      const uploadSingle = util.promisify(upload.single("image"));
+      await uploadSingle(req, res);
+
+      const pet = JSON.parse(req.body.pet);
+
+      const { file } = req;
+
+      pet.imagebuf = Buffer.from(file.buffer, file.encoding);
+
       const result = await petRepository.newPet(pet);
       return res.json(result);
     } catch (err) {
@@ -78,7 +90,7 @@ class PetController {
       const downloadURL = await petRepository.getPetDownloadURL(
         petId.toString()
       );
-      return res.json(downloadURL);
+      return res.json({ downloadURL });
     } catch (err) {
       return res.status(500).send(err);
     }
