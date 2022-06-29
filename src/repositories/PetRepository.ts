@@ -1,14 +1,9 @@
 import { v4 as uuid } from "uuid";
 import { client } from "../db/PostgresConection";
 import { Pet } from "../models/Pet";
-import { UserRepository } from "../repositories/UserRepository"
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
-import { storage } from "../services/Firebase";
+import { UserRepository } from "../repositories/UserRepository";
+import { petAdoptedEmail } from "../services/AutomateEmailer";
+import { bucket } from "../services/Firebase";
 
 class PetRepository {
   // add new pet post to db
@@ -35,18 +30,16 @@ class PetRepository {
 
     await client.query(query);
 
-    /*
-    const { image } = pet;
-    if (image) {
-      if (image.size >= 4 * 1024 * 1024) {
+    const { imagebuf } = pet;
+    if (imagebuf) {
+      if (imagebuf.byteLength >= 4 * 1024 * 1024) {
         throw new Error(
           "Could not add pet: Image size should be smaller than 4MiB"
         );
       }
 
-      const imageRef = ref(storage, `pets/${petId}`);
-      await uploadBytes(imageRef, image);
-    } */
+      await bucket.file(`pets/${petId}`).save(imagebuf);
+    }
 
     return {
       status: "success",
@@ -55,22 +48,17 @@ class PetRepository {
     };
   }
   //delete adoption post
-  async deletePet(pet_id: string) {
+  async deletePet(id: string) {
     const query = {
       text: "DELETE FROM pets WHERE petid = $1",
-      values: [pet_id],
+      values: [id],
     };
 
     await client.query(query);
-    /*
-    try {
-      const imageRef = ref(storage, `pets/${pet_id}`);
-      await deleteObject(imageRef);
-    } catch (err) {
-      if (err.code != "storage/object-not-found") {
-        throw err;
-      }
-    }*/
+
+    const file = bucket.file(`pets/${id}`);
+    const exists = (await file.exists())[0];
+    if (exists) await file.delete();
 
     return {
       status: "success",
@@ -89,18 +77,10 @@ class PetRepository {
     const res = await client.query(query);
     const pet = res.rows[0];
 
-    pet.imageURL = null;
-    /*
-    try {
-      const imageRef = ref(storage, `pets/${pet.petid}`);
-      pet.imageURL = await getDownloadURL(imageRef);
-    } catch (err) {
-    if (err.code != "storage/object-not-found") {
-          return null
-        }
+    const file = bucket.file(`pets/${id}`);
+    const exists = (await file.exists())[0];
+    pet.imageURL = exists ? file.publicUrl() : null;
 
-    }
-    */
     pet.donatorInfo = await userRepository.getUser(pet.donatorid);
     return pet;
   }
@@ -128,8 +108,9 @@ class PetRepository {
   }
 
   async getPetDownloadURL(id: string) {
-    const imageRef = ref(storage, `pets/${id}`);
-    return await getDownloadURL(imageRef);
+    const file = bucket.file(`pets/${id}`);
+    const exists = (await file.exists())[0];
+    return exists ? file.publicUrl() : null;
   }
 }
 
