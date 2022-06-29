@@ -35,6 +35,7 @@ class PetRepository {
 
     await client.query(query);
 
+    /*
     const { image } = pet;
     if (image) {
       if (image.size >= 4 * 1024 * 1024) {
@@ -45,7 +46,7 @@ class PetRepository {
 
       const imageRef = ref(storage, `pets/${petId}`);
       await uploadBytes(imageRef, image);
-    }
+    } */
 
     return {
       status: "success",
@@ -61,7 +62,7 @@ class PetRepository {
     };
 
     await client.query(query);
-
+    /*
     try {
       const imageRef = ref(storage, `pets/${pet_id}`);
       await deleteObject(imageRef);
@@ -69,7 +70,7 @@ class PetRepository {
       if (err.code != "storage/object-not-found") {
         throw err;
       }
-    }
+    }*/
 
     return {
       status: "success",
@@ -89,17 +90,17 @@ class PetRepository {
     const pet = res.rows[0];
 
     pet.imageURL = null;
-
+    /*
     try {
       const imageRef = ref(storage, `pets/${pet.petid}`);
       pet.imageURL = await getDownloadURL(imageRef);
     } catch (err) {
-      /**
-       * if (err.code != "storage/object-not-found") {
+    if (err.code != "storage/object-not-found") {
           return null
         }
-       */
+
     }
+    */
     pet.donatorInfo = await userRepository.getUser(pet.donatorid);
     return pet;
   }
