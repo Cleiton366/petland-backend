@@ -4,6 +4,7 @@ import { DonationRequest } from "../models/DonationRequest";
 import { petAdoptedEmail } from "../services/AutomateEmailer";
 import { UserRepository } from "../repositories/UserRepository";
 import { ChatRepository } from "../repositories/ChatRepository";
+import { PetRepository } from "../repositories/PetRepository";
 
 class DonationRequestRepository {
   async newDonationRequest(donationRequest: DonationRequest) {
@@ -83,6 +84,8 @@ class DonationRequestRepository {
   }
   async getUserDonationRequests(userid: string) {
     const userRepository = new UserRepository();
+    const petRepository = new PetRepository();
+
     const query = {
       text: "SELECT * FROM donationrequests WHERE donatorid = $1 AND isadopted = false",
       values: [userid],
@@ -94,7 +97,10 @@ class DonationRequestRepository {
     const donationRequestsList = [];
     for (let i = 0; i < donationRequests.length; i++) {
       var userId = donationRequests[i].interresteddoneeid;
+      var petId = donationRequests[i].petid;
+
       const user = await userRepository.getUser(userId);
+      const pet = await petRepository.getPet(petId);
 
       donationRequestsList.push({
         DonationRequest: donationRequests[i],
@@ -103,9 +109,9 @@ class DonationRequestRepository {
           userName: user.username,
           userPhoto: user.avatarurl,
         },
+        Pet : pet
       });
     }
-
     return donationRequestsList;
   }
 }
