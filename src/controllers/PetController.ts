@@ -14,12 +14,13 @@ class PetController {
       const uploadSingle = util.promisify(upload.single("image"));
       await uploadSingle(req, res);
 
-      const pet = req.body.pet;
+      const pet = JSON.parse(req.body.pet);
+
       const { file } = req;
 
       pet.imagebuf = file ? Buffer.from(file.buffer, file.encoding) : null;
+
       const result = await petRepository.newPet(pet);
-      
       return res.json(result);
     } catch (err) {
       return res.status(500).send(err);
