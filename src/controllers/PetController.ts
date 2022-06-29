@@ -18,7 +18,7 @@ class PetController {
 
       const { file } = req;
 
-      pet.imagebuf = Buffer.from(file.buffer, file.encoding);
+      pet.imagebuf = file ? Buffer.from(file.buffer, file.encoding) : null;
 
       const result = await petRepository.newPet(pet);
       return res.json(result);
