@@ -40,7 +40,7 @@ describe("DonationRequests", () => {
   it("should return a list of donation requests", async () => {
     const response = await request(app)
       .get("/donationrequest/list")
-      .set("userid", "test");
+      .set("userid", "1545028452517592");
     expect(response.body.length).toBeGreaterThan(0);
   });
 });
