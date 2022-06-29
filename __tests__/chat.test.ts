@@ -3,7 +3,7 @@ import request from "supertest";
 
 describe ("Chats", () => {
 
-    const chatId = 'fea3024c-6122-40f3-8a49-cce9b6615c27';
+    const chatId = 'testchat';
     const userId = '1545028452517592';
 
     it("should return a chat", async () => {
@@ -25,8 +25,8 @@ describe ("Chats", () => {
         .post("/chat/newMessage")
         .send({
             message: "test message",
-            chatId: "fea3024c-6122-40f3-8a49-cce9b6615c27",
-            userId: "1545028452517592"
+            chatId: chatId,
+            userId: userId
         })
         expect(response.body.status).toBe("success");
     });
