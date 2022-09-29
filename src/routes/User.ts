@@ -69,6 +69,9 @@ router.get("/login_error", (req, res) => res.json("Something went wrong"));
 router.get("/user-info", CheckSession, async (req, res) => {
   try {
     const user = await userController.getUser(req, res);
+    if(!user) {
+      return res.status(500).send("User not found");
+    }
     return res.json(user);
   } catch (err) {
     return res.status(500).send(err);
@@ -86,6 +89,15 @@ router.get("/logout", (req, res) => {
 router.post("/newUser", async (req, res) => {
   try {
     const user = await userController.newUser(req, res);
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
+router.post("/newUserAndroid", async (req, res) => {
+  try {
+    const user = await userController.newUserAndroid(req, res);
     return res.json(user);
   } catch (err) {
     return res.status(500).send(err);

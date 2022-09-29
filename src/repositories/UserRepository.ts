@@ -34,6 +34,38 @@ class UserRepository {
     return user;
   }
 
+  async newUserAndroid(
+    id: string,
+    userName: string,
+    email: string,
+    avatarUrl: string
+  ) {
+    console.log(id, userName, email, avatarUrl);
+    try {
+      const userExist = await this.verifyUserEmail(email);
+      if (userExist) {
+        throw new Error("Error: User already exists");
+      }
+
+      const query = {
+        text: "INSERT INTO users(avatarUrl, id, userName, email) VALUES($1, $2, $3, $4)",
+        values: [avatarUrl, id, userName, email],
+      };
+
+      await client.query(query);
+      await accountCreatedEmail(email);
+
+      return {
+        id: id,
+        userName: userName,
+        email: email,
+        avatarUrl: avatarUrl,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async verifyUserEmail(email: string) {
     const query = {
       text: "SELECT * FROM users WHERE email = $1",

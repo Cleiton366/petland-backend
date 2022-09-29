@@ -5,13 +5,25 @@ const userRepository = new UserRepository();
 
 class UserController {
   async getUser(req: Request, res: Response) {
-    const { user } = req;
+    let { user } = req;
+    if(!user) {
+      user = req.headers.user.toString();
+    }
     return await userRepository.getUser(user.toString());
   }
 
   async newUser(req: Request, res: Response) {
     const user = req;
     return await userRepository.newUser(user);
+  }
+
+  async newUserAndroid(req: Request, res: Response) {
+    try {
+      const { avatarurl, email, id , username } = req.body;
+      return await userRepository.newUserAndroid(id, username, email, avatarurl);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async verifyUser(id: string) {
