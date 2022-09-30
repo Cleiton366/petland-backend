@@ -56,9 +56,9 @@ class UserRepository {
 
       return {
         id: id,
-        userName: userName,
+        username: userName,
         email: email,
-        avatarUrl: avatarUrl,
+        avatarurl: avatarUrl,
       };
     } catch (error) {
       throw new Error(error);
