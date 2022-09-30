@@ -40,7 +40,6 @@ class UserRepository {
     email: string,
     avatarUrl: string
   ) {
-    console.log(id, userName, email, avatarUrl);
     try {
       const userExist = await this.verifyUserEmail(email);
       if (userExist) {
