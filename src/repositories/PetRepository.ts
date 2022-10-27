@@ -9,11 +9,12 @@ class PetRepository {
   // add new pet post to db
   async newPet(pet: Pet) {
     const petId = uuid();
+    const petPhoto = await this.savePetImage(petId, pet.imagebuf);
 
     const query = {
       text:
         "INSERT INTO pets(petid, donatorid, ownerid," +
-        "petname, city, sstate, age, medicalcondition, pettype, isadopted) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+        "petname, city, sstate, age, medicalcondition, pettype, isadopted, petPhoto) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
       values: [
         petId,
         pet.donatorId,
@@ -25,27 +26,31 @@ class PetRepository {
         pet.medicalCondition,
         pet.petType,
         false,
+        petPhoto,
       ],
     };
 
     await client.query(query);
-
-    const { imagebuf } = pet;
-    if (imagebuf) {
-      if (imagebuf.byteLength >= 4 * 1024 * 1024) {
-        throw new Error(
-          "Could not add pet: Image size should be smaller than 4MiB"
-        );
-      }
-
-      await bucket.file(`pets/${petId}`).save(imagebuf);
-    }
 
     return {
       status: "success",
       message: "Pet added to db",
       petId: petId,
     };
+  }
+
+  async savePetImage(id: string, imagebuf: Buffer) {
+    if (imagebuf.byteLength >= 4 * 1024 * 1024) {
+      throw new Error("Could not add pet: Image size should be smaller than 4MiB");
+    }
+
+    await bucket.file(`pets/${id}`).save(imagebuf);
+
+    const file = bucket.file(`pets/${id}`);
+    const exists = (await file.exists())[0];
+    const imageURL = exists ? file.publicUrl() : null;
+
+    return imageURL;
   }
   //delete adoption post
   async deletePet(id: string) {
@@ -78,10 +83,6 @@ class PetRepository {
     const pet = res.rows[0];
 
     pet.donatorInfo = await userRepository.getUser(pet.donatorid);
-
-    const file = bucket.file(`pets/${id}`);
-    const exists = (await file.exists())[0];
-    pet.imageURL = exists ? file.publicUrl() : null;
 
     return pet;
   }
