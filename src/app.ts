@@ -3,6 +3,7 @@ import { router as petsRouter } from "./routes/Pets";
 import { router as userRouter } from "./routes/User";
 import { router as donationRequestRouter } from "./routes/DonationRequest";
 import { router as chatRouter } from "./routes/Chat";
+import { router as socialRouter } from "./routes/Social";
 import cookieParser from "cookie-parser";
 import "dotenv/config.js";
 import cors from "cors";
@@ -24,5 +25,6 @@ app.use(petsRouter);
 app.use(userRouter);
 app.use(donationRequestRouter);
 app.use(chatRouter);
+app.use(socialRouter);
 
 export { app };
