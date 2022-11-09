@@ -6,7 +6,7 @@ class SocialRepository {
     async getSocial (userid : String) {
         var userFriendList : UserFriendlist
 
-        const following = await (await client.query("SELECT * FROM social WHERE follower_user_id = $1", [userid]));
+        const following = await client.query("SELECT * FROM social WHERE follower_user_id = $1", [userid]);
         const followers = await client.query("SELECT * FROM social WHERE following_user_id = $1", [userid]);
 
         userFriendList.followers = followers.rows
