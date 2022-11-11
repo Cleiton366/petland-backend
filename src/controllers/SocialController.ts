@@ -5,9 +5,9 @@ const socialRepository = new SocialRepository();
 
 class SocialController {
     async getSocial (req: Request, res: Response) {
-        const { userId } = req.params;
+        const { userid } = req.headers;
         try {
-            const result = await socialRepository.getSocial(userId);
+            const result = await socialRepository.getSocial(userid.toString());
             return res.json(result);
         } catch (err) { 
             return res.status(500).send(err);
@@ -25,9 +25,9 @@ class SocialController {
     }
 
     async deleteSocial (req: Request, res: Response) {
-        const { userId } = req.params;
+        const { userid } = req.headers;
         try {
-            await socialRepository.deleteSocial(userId);
+            await socialRepository.deleteSocial(userid.toString());
             return res.status(200);
         } catch (err) { 
             return res.status(500).send(err);
