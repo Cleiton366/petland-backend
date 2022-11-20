@@ -8,6 +8,9 @@ class SocialController {
         const { userid } = req.headers;
         try {
             const result = await socialRepository.getSocial(userid.toString());
+            if(result) {
+                return res.json(result);
+            } else res.status(204)
             return res.json(result);
         } catch (err) { 
             return res.status(500).send(err);

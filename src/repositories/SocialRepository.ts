@@ -8,12 +8,16 @@ class SocialRepository {
 
         const following = await client.query("SELECT * FROM social WHERE follower_user_id = $1", [userid]);
         const followers = await client.query("SELECT * FROM social WHERE following_user_id = $1", [userid]);
-
-        userFriendList.followers = followers.rows
-        userFriendList.following = following.rows
-        userFriendList.followersQtd = followers.rowCount
-        userFriendList.followingQtd = following.rowCount
-
+        
+        if(followers.rowCount > 0) {
+            userFriendList.followers = followers.rows
+            userFriendList.followersQtd = followers.rowCount
+        }
+        if(following.rowCount > 0) {
+            userFriendList.following = following.rows
+            userFriendList.followingQtd = following.rowCount
+        }
+        
         return userFriendList
     }
 
