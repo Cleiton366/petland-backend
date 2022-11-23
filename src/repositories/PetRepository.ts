@@ -83,7 +83,6 @@ class PetRepository {
     const pet = res.rows[0];
 
     pet.donatorInfo = await userRepository.getUser(pet.donatorid);
-
     return pet;
   }
 
@@ -100,13 +99,23 @@ class PetRepository {
 
   //get a list of all pets by pet type
   async getPetAll(petType: string) {
+    const userRepository = new UserRepository();
     const query = {
       text: "SELECT * FROM pets WHERE pettype =$1 and isadopted = false",
       values: [petType],
     };
 
     const res = await client.query(query);
-    return res.rows;
+    const petsList = res.rows
+
+    for(var i = 0; i < petsList.length; i++) {
+      var donatorid = petsList[i].donatorid
+      petsList[i].donatorInfo = await userRepository.getUser(donatorid);
+    }
+
+    console.log(petsList)
+    
+    return petsList;
   }
 
   async getPetDownloadURL(id: string) {
