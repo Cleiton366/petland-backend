@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Social } from "../models/Social";
 import { SocialRepository } from "../repositories/SocialRepository";
 
 const socialRepository = new SocialRepository();
@@ -19,9 +20,9 @@ class SocialController {
 
     async updateSocial (req: Request, res: Response) {
         try {
-            const { social } = req.body;
-            await socialRepository.updateSocial(social);
-            return res.status(201);
+            const social = req.body
+            const result = await socialRepository.updateSocial(social);
+            return res.status(201).json(result);
         } catch (err) {
             return res.status(500).send(err);
         }
@@ -30,8 +31,8 @@ class SocialController {
     async deleteSocial (req: Request, res: Response) {
         const { userid } = req.headers;
         try {
-            await socialRepository.deleteSocial(userid.toString());
-            return res.status(200);
+            const result = await socialRepository.deleteSocial(userid.toString());
+            return res.status(200).json(result);
         } catch (err) { 
             return res.status(500).send(err);
         }
