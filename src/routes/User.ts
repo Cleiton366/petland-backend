@@ -77,6 +77,9 @@ router.get("/user-info", CheckSession, async (req, res) => {
     return res.status(500).send(err);
   }
 });
+
+router.get("/get-user", CheckSession, userController.userInfo)
+
 // Logout route
 router.get("/logout", (req, res) => {
   req.session = null;

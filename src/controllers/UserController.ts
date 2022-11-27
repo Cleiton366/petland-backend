@@ -12,6 +12,16 @@ class UserController {
     return await userRepository.getUser(user.toString());
   }
 
+  async userInfo(req: Request, res: Response) {
+      var { userid } = req.headers
+      try {
+          const user = await userRepository.getUser(userid.toString());
+          return res.status(200).json(user)
+      } catch (error) {
+        res.status(500).json(error)
+      }
+  }
+
   async newUser(req: Request, res: Response) {
     const user = req;
     return await userRepository.newUser(user);
