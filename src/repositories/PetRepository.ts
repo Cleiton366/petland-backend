@@ -113,7 +113,6 @@ class PetRepository {
       petsList[i].donatorInfo = await userRepository.getUser(donatorid);
     }
 
-    console.log(petsList)
     
     return petsList;
   }
