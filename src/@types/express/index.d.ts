@@ -1,5 +1,6 @@
 import { Pet } from "../../models/Pet";
 import { DonationRequest } from "../../models/DonationRequest";
+import { Social } from "../../models/Social";
 export {};
 declare global {
   namespace Express {
@@ -12,6 +13,7 @@ declare global {
       email: string;
       id: string;
       username: string;
+      social : Social;
     }
   
     export interface Response {
