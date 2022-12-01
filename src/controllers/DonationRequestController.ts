@@ -16,20 +16,17 @@ class DonationRequestController {
     }
   }
   async acceptDonationRequest(req: Request, res: Response) {
-    const { interrestedDoneeId, petId, donationRequestId } = req.body;
+    const { interresteddoneeid, petid, donationrequestid } = req.body;
     try {
       const result = await donationRequestRepository.acceptDonationRequest(
-        interrestedDoneeId,
-        petId,
-        donationRequestId
-      );
+        interresteddoneeid, petid, donationrequestid);
       return res.json(result);
     } catch (err) {
       return res.status(500).send(err);
     }
   }
   async rejectDonationRequest(req: Request, res: Response) {
-    const { donationRequestId } = req.body;
+    const { donationRequestId } = req.headers;
     try {
       const result = await donationRequestRepository.rejectDonationRequest(
         donationRequestId.toString()
