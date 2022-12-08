@@ -7,14 +7,14 @@ import { bucket } from "../services/Firebase";
 
 class PetRepository {
   // add new pet post to db
-  async newPet(pet: Pet) {
+  async newPet(pet) {
     const petId = uuid();
     const petPhoto = await this.savePetImage(petId, pet.imagebuf);
 
     const query = {
       text:
         "INSERT INTO pets(petid, donatorid, ownerid," +
-        "petname, city, sstate, age, medicalcondition, pettype, isadopted, petPhoto) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+        "petname, city, sstate, age, medicalcondition, pettype, isadopted, petPhoto, address) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
       values: [
         petId,
         pet.donatorId,
@@ -27,6 +27,7 @@ class PetRepository {
         pet.petType,
         false,
         petPhoto,
+        pet.petAddress.address
       ],
     };
 
